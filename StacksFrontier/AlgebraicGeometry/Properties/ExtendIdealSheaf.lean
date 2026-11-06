@@ -287,8 +287,8 @@ theorem exists_fg_le_map_eq {R : Type*} [CommRing R] (N : Ideal R) {ι : Type*} 
     intro i
     have hsup : N.map (f i) ≤ ⨆ x : N, (Ideal.span {(x : R)}).map (f i) := by
       rw [← Ideal.map_iSup, iSup_span_singleton_eq]
-    obtain ⟨t, ht⟩ := CompleteLattice.IsCompactElement.exists_finset_of_le_iSup _
-      ((Submodule.fg_iff_compact _).mp (h i)) (fun x : N ↦ (Ideal.span {(x : R)}).map (f i)) hsup
+    obtain ⟨t, ht⟩ := IsCompactElement.exists_finset_of_le_iSup ((Submodule.fg_iff_compact _).mp (h i))
+      (fun x : N ↦ (Ideal.span {(x : R)}).map (f i)) hsup
     refine ⟨t, ht.trans (iSup₂_le fun x hx ↦ Ideal.map_mono (Ideal.span_le.mpr ?_))⟩
     rintro _ rfl
     exact Ideal.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hx))
