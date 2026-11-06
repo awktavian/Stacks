@@ -171,7 +171,7 @@ private theorem aux_eval_mapRange {k K σ : Type*} [Field k] [CommRing K] [Algeb
   classical
   let := Fintype.ofFinite σ
   set Q : MvPolynomial σ k := AddMonoidAlgebra.map φ.toAddMonoidHom P with hQ
-  have hcoeff : ∀ d, MvPolynomial.coeff d Q = φ (MvPolynomial.coeff d P) := fun d => rfl
+  have hcoeff : ∀ d, Q.coeff d = φ (P.coeff d) := fun d => rfl
   have hsub : Q.support ⊆ P.support := by
     intro d hd
     rw [MvPolynomial.mem_support_iff, hcoeff d] at hd
@@ -179,8 +179,8 @@ private theorem aux_eval_mapRange {k K σ : Type*} [Field k] [CommRing K] [Algeb
     exact fun hP => hd (by rw [hP, map_zero])
   rw [MvPolynomial.eval_eq', MvPolynomial.eval_eq', map_sum]
   have hRHS : ∀ d ∈ P.support,
-      φ (MvPolynomial.coeff d P * ∏ s, (algebraMap k K (c s)) ^ d s)
-        = MvPolynomial.coeff d Q * ∏ s, c s ^ d s := by
+      φ (P.coeff d * ∏ s, (algebraMap k K (c s)) ^ d s)
+        = Q.coeff d * ∏ s, c s ^ d s := by
     intro d _
     have hprod : (∏ s, (algebraMap k K (c s)) ^ d s) = algebraMap k K (∏ s, c s ^ d s) := by
       rw [map_prod]; simp [map_pow]
@@ -246,9 +246,9 @@ theorem exists_coeffs_basis_each_factor
     simp at he
     exact hdet he.symm
   have hφ : ∀ i, ∃ (dd : (Fin n × Fin Nidx) →₀ ℕ) (φ : (K i) →ₗ[k] k),
-      φ (MvPolynomial.coeff dd (P i)) ≠ 0 := by
+      φ ((P i).coeff dd) ≠ 0 := by
     intro i
-    obtain ⟨dd, hd⟩ : ∃ dd, MvPolynomial.coeff dd (P i) ≠ 0 := by
+    obtain ⟨dd, hd⟩ : ∃ dd, (P i).coeff dd ≠ 0 := by
       by_contra h
       push Not at h
       exact hPne i (MvPolynomial.ext _ _ (fun dd => by simp [h dd]))
@@ -258,7 +258,7 @@ theorem exists_coeffs_basis_each_factor
     fun i => AddMonoidAlgebra.map (φ i).toAddMonoidHom (P i) with hQdef
   have hQne : ∀ i, Q i ≠ 0 := by
     intro i hz
-    have hco : MvPolynomial.coeff (dd i) (Q i) = 0 := by rw [hz]; simp
+    have hco : (Q i).coeff (dd i) = 0 := by rw [hz]; simp
     rw [hQdef] at hco
     exact hdφ i hco
   set G : MvPolynomial (Fin n × Fin Nidx) k := ∏ i, Q i with hG
