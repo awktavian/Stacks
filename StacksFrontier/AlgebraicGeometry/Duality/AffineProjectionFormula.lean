@@ -20,7 +20,9 @@ this morphism is invertible when `h` is affine and `G` and `H` are quasi-coheren
 This file constructs that morphism, `projectionFormulaMap`, and proves everything about it
 that does not use affineness: it is natural in both module arguments, and its composite with
 the tensorized unit of the adjunction is again computed by adjunction.  Invertibility itself
-is *not* proved here; see the implementation notes.
+is not proved in this file: it is proved in the repository as `isIso_projectionFormulaMap`
+(`@[stacks 0FZE]`, `Duality/ProjectionFormulaLocal.lean`), whose import cone reaches this
+file, so it cannot be cited here; see the implementation notes.
 
 ## Main definitions
 
@@ -261,13 +263,18 @@ lemma projectionFormulaMap_natural_unit_eval {T S : Scheme.{u}} (h : T ⟶ S)
 /-! ### The projection formula as an isomorphism
 
 Stacks 0FZE says that `projectionFormulaMap h G H` is invertible when `h` is affine and `G`
-and `H` are quasi-coherent.  That is not proved here; the declarations below take
-invertibility as a hypothesis, so that the isomorphism and its naturality are available as
-soon as it is supplied. -/
+and `H` are quasi-coherent.  That is proved in the repository, as `isIso_projectionFormulaMap`
+(`@[stacks 0FZE]`, `Duality/ProjectionFormulaLocal.lean`).  That file lies downstream of this
+one, so the proof cannot be cited here, and the declarations below keep invertibility as an
+instance hypothesis: `ProjectionFormulaLocal` wires the theorem into them with
+`haveI := isIso_projectionFormulaMap h G H hG hH` in `projectionFormulaIsoOfQuasicoherent`. -/
 
 /-- The projection-formula morphism, packaged as an isomorphism
 `h_*G ⊗_{𝒪_S} H ≅ h_*(G ⊗_{𝒪_T} h^*H)` under the hypothesis that it is invertible.  Stacks
-0FZE asserts that hypothesis for an affine morphism and quasi-coherent modules. -/
+0FZE — proved in the repository as `isIso_projectionFormulaMap` (`@[stacks 0FZE]`,
+`Duality/ProjectionFormulaLocal.lean`) — supplies that hypothesis for an affine morphism and
+quasi-coherent modules; `projectionFormulaIsoOfQuasicoherent` there is this `def` with it
+discharged. -/
 def projectionFormulaIso {T S : Scheme.{u}} (h : T ⟶ S)
     (G : SheafOfModules.{u} (structureSheafRing T.toRingedSpace))
     (H : SheafOfModules.{u} (structureSheafRing S.toRingedSpace))
