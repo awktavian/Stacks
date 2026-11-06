@@ -60,9 +60,11 @@ and injectivity from it.
 
 ## What is carried as a hypothesis, and why
 
-Three facts about this situation are not available in this repository and are carried as
-explicit named hypotheses of the statements that need them. None of them weakens a conclusion:
-each is a true statement of the source whose proof is missing here.
+Three facts about this situation enter the statements below as explicit named hypotheses. None of
+them weakens a conclusion: each is a true statement of the source. Their proofs are now in the
+repository — named section by section below — and the binders are retained because the statements
+are deliberately phrased as generic carrier assertions; discharging a binder inside a signature
+would change the statement, which this file does not undertake.
 
 ### `IsAffineSpaceBundle p 1`, hence the three properties `p^*` needs
 
@@ -73,10 +75,14 @@ All three follow from the local triviality of the line bundle through the lemmas
 `Stacks.Chow.relativeDimension_of_isAffineSpaceBundle` of
 `StacksFrontier.AlgebraicGeometry.Chow.AffineBundle.Basic`, applied to
 `Stacks.Chow.IsAffineSpaceBundle p 1`. That local triviality — over an open `U` trivializing `ℒ`
-one has `\Sym^*(𝒪_U) = 𝒪_U[T]` and hence `p^{-1}U ≅ 𝔸^1_U` over `U` — is **not** proved here:
-the repository has no identification of a relative spectrum chart
-`Stacks.RelativeSpec.gluedSpectrum`.chart with an affine space. So the statements below take the
-three properties as instance and explicit binders, exactly as
+one has `\Sym^*(𝒪_U) = 𝒪_U[T]` and hence `p^{-1}U ≅ 𝔸^1_U` over `U` — is proved:
+`Stacks.LineBundle.Situation.isAffineSpaceBundle_totalSpaceToBase` of
+`StacksFrontier.AlgebraicGeometry.Chow.AffineBundle.LineBundleAffineSpaceBundle` identifies
+`Γ(V, \Sym(ℰ))` with a polynomial ring over an affine trivializing open
+(`Stacks.SymAlgSections.ungradedSymSectionsMvPolynomialEquiv`) and concludes that the projection of
+the total space is an affine-space bundle of rank one; the three properties then follow from the
+lemmas cited above. The statements below nevertheless take the three properties as instance and
+explicit binders, exactly as
 `Stacks.Chow.flatPullbackChow_surjective_of_isAffineSpaceBundle_zero` does, and a caller who has
 `IsAffineSpaceBundle p 1` supplies them from it.
 
@@ -84,30 +90,53 @@ three properties as instance and explicit binders, exactly as
 
 `Stacks.Chow.flatPullbackChow` is granted
 `Stacks.Chow.FlatPullbackFactorsThroughRationalEquivalence`, the assertion of Stacks 02S1, as a
-hypothesis by the convention of this chapter: Stacks 02S1 is proved here only for open immersions
-and isomorphisms, hence at relative dimension zero. The zero-dimensional half of the retraction
+hypothesis by the convention of this chapter. Stacks 02S1 is now proved here in its general case,
+for an arbitrary flat morphism of relative dimension `r`:
+`Stacks.Chow.flatPullbackFactorsThroughRationalEquivalence_general` of
+`StacksFrontier.AlgebraicGeometry.Chow.FlatPullback.GeneralRationalEquivalence`, registered
+`@[stacks 02S1 "the general case: an arbitrary flat morphism of relative dimension r"]`. The
+instance at relative dimension one enters the statements below as the binder `hfac`, since
+discharging it would change their signatures. The zero-dimensional half of the retraction
 does **not** need it as a hypothesis — along `𝟙_X` it is the theorem
 `Stacks.Chow.flatPullbackFactorsThroughRationalEquivalence_id`, which is supplied inside the
 statements below rather than assumed.
 
 ### `gysin` and `GysinRetractsFlatPullbackChow`: Stacks 02TR on Chow groups
 
-Two things are granted here. First, that the zero section's image `o(X)` is an effective Cartier
-divisor on `L`, and hence — with the flatness proved below — a relative effective Cartier divisor
-on `L/X` in the sense of Definition 062T. It is: `o(X)` is the zero scheme of the fibre
-coordinate `Stacks.LineBundle.fibreCoordinate`, a regular global section of `p^*ℒ^{⊗ -1}`, which
-is Stacks 0F96 part (1). The repository has the fibre coordinate but no identification of its
-zero scheme with `o(X)`, and Stacks 0F96 is not formalized here, so the Gysin homomorphism of
-that divisor is not constructible and is taken as the abstract homomorphism `gysin`.
+Two things enter here as binders. First, the Gysin homomorphism `o^*` of the divisor `o(X)`. The
+Cartier property is a theorem: `o(X)` is the zero scheme of the tautological global section
+`Stacks.LineBundle.Situation.tautologicalSectionBase` of the pullback
+`Stacks.LineBundle.Situation.basePullbackInverse` of `ℒ^{⊗ -1}`
+(`Stacks.LineBundle.Situation.isRegularSection_tautologicalSectionBase`), that zero scheme is
+identified with the closed subscheme cut out by the zero section
+(`Stacks.LineBundle.Situation.zeroScheme_tautologicalSectionBase_eq_ker_zeroSection`), and the
+image of the zero section is a relative effective Cartier divisor on `L/X` in the sense of
+Definition 062T: that is Stacks 0F96 part (1), registered at
+`Stacks.LineBundle.Situation.isRelativeEffectiveCartierDivisor_ker_zeroSection` of
+`StacksFrontier.AlgebraicGeometry.Chow.AffineBundle.AffineSpaceBundleSmooth` and at
+`Stacks.LineBundle.Situation.isRelativeEffectiveCartierDivisor_zeroScheme_tautologicalSectionBase`
+of `...AffineBundle.ZeroSectionCartier`. Stacks 0F96 itself is registered in this repository in
+its parts (1) through (6). The Gysin homomorphism of clause (3),
+`Stacks.Chow.zeroSectionGysinChow` of `...AffineBundle.ZeroSectionGysin`, constructs `o^*` on
+Chow groups; `gysin` is nevertheless taken as an arbitrary homomorphism, because the statements
+below are phrased through the generic carrier `GysinRetractsFlatPullbackChow` described next.
 
-Second, Stacks 02TR itself on Chow classes. The repository's 02TR carriers —
+Second, Stacks 02TR on Chow classes. The descent that was once missing has been carried out:
+Stacks 02TO is proved with no hypothesis — the descended map is the unconditional
+`Stacks.Chow.gysinChowOfInvertible` of
+`StacksFrontier.AlgebraicGeometry.Chow.KeyFormula.GysinComponentDischarge`, registered
+`@[stacks 02TO "the descended map i^* : A_{k+1}(X) ⟶ A_k(D), with no hypothesis"]` — and the
+first equality of Stacks 02TR holds on arbitrary Chow classes for a zero-scheme-presented
+relative effective Cartier divisor as `Stacks.Chow.gysinChowOfInvertible_flatPullbackChow` of
+`StacksFrontier.AlgebraicGeometry.Chow.RelativeEffectiveCartierFlatPullbackChow`. For the zero
+section the retraction of the flat pullback by the constructed `o^*` is Stacks 0F96 part (4),
+`Stacks.Chow.zeroSectionGysinChow_comp_flatPullbackChowOfRelativeDimension` of
+`...AffineBundle.ZeroSectionGysinRetraction`: `o^* p^* = \mathrm{id}` on Chow groups, with `p^*`
+read through `Stacks.Chow.flatPullbackChowOfRelativeDimension`. The cycle-level carriers
 `Stacks.Chow.gysinHomomorphismOfInvertible_flatPullback_primeCycle` and its two companions in
-`StacksFrontier.AlgebraicGeometry.Chow.RelativeEffectiveCartierFlatPullback` — are stated **only on
-the fundamental cycle of one integral closed subscheme**, and that file records that the
-extension to a general cycle, which reindexes a locally finite sum along the fibres of `p`, is
-not carried out. Descending further to Chow classes would in addition need Stacks 02TO, itself a
-hypothesis here (`Stacks.Chow.GysinOfInvertibleFactorsThroughRationalEquivalence`). So the
-Chow-level statement is carried as `Stacks.Chow.GysinRetractsFlatPullbackChow`, phrased for an
+`StacksFrontier.AlgebraicGeometry.Chow.RelativeEffectiveCartierFlatPullback` remain as stated
+there. The Chow-level statement is nevertheless carried as
+`Stacks.Chow.GysinRetractsFlatPullbackChow`, phrased for an
 arbitrary pair `p`, `q` of flat morphisms and an arbitrary `gysin`, and instantiated below at
 `q = p ∘ o = 𝟙_X`. Phrasing it for an arbitrary pair is deliberate: the hypothesis is then a
 statement of Stacks 02TR and not a restatement of the conclusion of Stacks 0B74.
@@ -218,9 +247,12 @@ dimension zero, both over the base scheme of chapter 42. The assertion is that
 
 Stacks 02TR is this statement for `W = D` a relative effective Cartier divisor on `Z/Y` with
 inclusion `i : D ⟶ Z`, for `q = i ≫ p` the restricted projection, and for `gysin` the Gysin
-homomorphism `i^*` of that divisor on Chow groups. It is carried as a hypothesis because the
-repository's 02TR carriers are stated only on the fundamental cycle of one integral closed
-subscheme and only at the level of cycles; see the honest-hypotheses section of
+homomorphism `i^*` of that divisor on Chow groups. The instance for the zero section of a line
+bundle is now a theorem of the repository — Stacks 0F96 part (4),
+`Stacks.Chow.zeroSectionGysinChow_comp_flatPullbackChowOfRelativeDimension` — and the general
+zero-scheme-presented equality on Chow classes is
+`Stacks.Chow.gysinChowOfInvertible_flatPullbackChow`; this def remains the generic carrier over an
+arbitrary pair `p`, `q` and homomorphism `gysin`. See the honest-hypotheses section of
 `StacksFrontier.AlgebraicGeometry.Chow.AffineBundle.LineBundleChow`.
 
 That `gysin` is an arbitrary homomorphism, and `p` and `q` an arbitrary pair, is deliberate: the
