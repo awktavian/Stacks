@@ -4,6 +4,7 @@ public import Mathlib.Algebra.Category.Ring.Epi
 public import Mathlib.Algebra.Lie.OfAssociative
 public import Mathlib.AlgebraicTopology.SimplexCategory.Basic
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Mathlib.RingTheory.Artinian.Ring
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.Idempotents
 public import Mathlib.RingTheory.PicardGroup
