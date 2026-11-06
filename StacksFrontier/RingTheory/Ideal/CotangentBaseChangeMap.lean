@@ -142,7 +142,6 @@ noncomputable def quotientTensorCotangentEquivMap
   have h : ⇑L = ⇑e₄ := by
     funext z
     induction z with
-    | zero => simp
     | add x y hx hy => simp [hx, hy]
     | tmul b m =>
       obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
