@@ -27,7 +27,9 @@ variable {C : Type u₁} [Category.{v₁} C] {D : Type u₂} [Category.{v₂} D]
 @[simps!]
 noncomputable def ringEquivEnd : End X ≃+* End (F.obj X) where
   __ := hF.mulEquivEnd X
-  map_add' _ _ := F.map_add
+  map_add' x y := by
+    apply End.ext
+    simp
 
 /-- `mulEquivEnd` as an isomorphism between endomorphism algebras. -/
 @[simps!]
@@ -35,8 +37,10 @@ noncomputable def algEquivEnd (R : Type*) [CommSemiring R] [CategoryTheory.Linea
     [CategoryTheory.Linear R D] [F.Linear R] : End X ≃ₐ[R] End (F.obj X) where
   __ := hF.ringEquivEnd X
   commutes' r := by
-    simp only [RingEquiv.toEquiv_eq_coe, Algebra.algebraMap_eq_smul_one, End.one_def,
-      Equiv.toFun_as_coe, EquivLike.coe_coe, ringEquivEnd_apply]
-    exact (F.map_smul r (𝟙 X)).trans congr(HSMul.hSMul r $(F.map_id X))
+    simp only [RingEquiv.toEquiv_eq_coe, Algebra.algebraMap_eq_smul_one,
+      Equiv.toFun_as_coe, EquivLike.coe_coe]
+    show (hF.mulEquivEnd X) (r • (1 : End X)) = r • (1 : End (F.obj X))
+    apply End.ext
+    simp [End.one_asHom, End.smul_asHom]
 
 end CategoryTheory.Functor.FullyFaithful
