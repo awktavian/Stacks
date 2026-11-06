@@ -81,13 +81,28 @@ right arrows is canonically isomorphic to this one, and it is where `res` exists
 The hypothesis `hbase` is the base-change clause of Stacks 0FBK, the source's first proof step:
 that `res(c(Z ⟶ X, 𝒩))` satisfies the relation `p^* ∘ c = ι_* ∘ j^* ∘ C` of the construction for
 the pulled-back sheaf `g^*𝒩`, that is, that it *is* `c(Z' ⟶ X', g^*𝒩)` in the sense in which
-this repository has that class. That clause is not proved here — the normal cone of Stacks 0637,
-the deformation space of Stacks 0FBH and the class of Stacks 0F9J are all absent, which is why
-`Stacks.Chow.IsVirtualNormalGysinClass` characterizes the class rather than constructing it, and
-why the implementation notes of
-`StacksFrontier.AlgebraicGeometry.Chow.BivariantLemmas.VirtualNormalBundleClass` record the
-Stacks 0FBJ base change of Stacks 0FBK as not proved. Everything else the tag needs is proved or
-applied: `hsigma` is derived from the tag's commuting square, and the conclusion is Stacks 0FBL.
+this repository has that class. The clause is no longer absent from the repository: read on the
+completed class `Stacks.Chow.completedVirtualNormalGysinClass` it is the theorem
+`Stacks.Chow.completedBivariantRestriction_completedVirtualNormalGysinClass`, registered as the
+`@[stacks 0FBK "base change: the restriction of c(Z → X, 𝒩) ∈ A^*(Z → X)^∧ along X' → X is c(Z ×_X X' → X', g^*𝒩), for 𝒩 of arbitrary rank"]`
+of
+`StacksFrontier.AlgebraicGeometry.Chow.BivariantLemmas.CompletedVirtualNormalBundleClassBaseChange`.
+The inputs this section once recorded as absent are registered too: the normal cone of Stacks 0637
+(`Stacks.Conormal.normalConeToNormalBundle`), the deformation space of Stacks 0FBH
+(`Stacks.Chow.normalConeToExceptionalDivisor_spec`) and the class of Stacks 0F9J
+(`Stacks.Chow.gysinAtInfinityClass` and its companions in the `GysinAtInfinity` family). The
+binder remains nonetheless, because the statements below abstract over the class: `c` and `c'`
+are arbitrary bivariant classes of degrees `m` and `m'`, and `hbase` is exactly the hypothesis
+tying `res(c)` to the pulled-back sheaf `g^*𝒩`; discharging it from the theorem above would mean
+instantiating `c` at `completedVirtualNormalGysinClass` and rewriting the cap data along
+`Stacks.Chow.completedVirtualNormalGysinClass_cap_baseChange` — a change of these signatures, not
+a gap in this repository. `Stacks.Chow.IsVirtualNormalGysinClass` is the repository's
+characterization of the class for an abstract bivariant class, and it is in that form that the
+clause enters below. Everything else the tag needs is proved or applied: the factorization
+hypothesis of Stacks 0FBL for `g^*𝒩` is derived from the tag's commuting square by
+`Stacks.Chow.dualMap_comp_surjection_eq_baseChange_surjection`, and the conclusion is Stacks 0FBL
+(`Stacks.Chow.virtualNormalGysinCap_eq_topChernCap_comp` of
+`StacksFrontier.AlgebraicGeometry.Chow.BivariantLemmas.VirtualNormalSubbundle`).
 
 The remaining hypotheses are those of Stacks 0FBL, unchanged and for the same reasons; see the
 implementation notes of
@@ -286,8 +301,10 @@ to it. The commuting square IS consumed: it yields the factorization hypothesis 
 for g^*N, which is `dualMap_comp_surjection_eq_baseChange_surjection`. The pulled-back sheaf is \
 the virtual normal sheaf of Stacks 0FBJ, and its constant rank is PROVED, not assumed. CARRIED: \
 the Stacks 0FBJ base-change clause of Stacks 0FBK as `hbase` -- that res(c) satisfies the \
-characterizing relation for g^*N, the source's first proof step, which is recorded as not \
-proved in this repository (Stacks 0637, 0FBH, 0F9J absent); and the hypotheses of \
+characterizing relation for g^*N, the source's first proof step; the clause is proved in this \
+repository for the completed class at \
+`completedBivariantRestriction_completedVirtualNormalGysinClass` (stacks 0FBK), and the binder is \
+retained because this theorem abstracts over the class c; and the hypotheses of \
 Stacks 0FBL, unchanged (Stacks 0FAA at the base-changed bundle projections as `hstep`, the \
 geometric consequence of the factorization as `hfactor`, Stacks 02TY injectivity as `hinj`, \
 Stacks 0B7G as this directory's cap-rule parameter)"]
@@ -354,8 +371,10 @@ repository (`bivariantRestriction`), every cartesian square being canonically is
 The commuting square IS consumed: it yields the factorization hypothesis of Stacks 0FBL for \
 g^*N. The pulled-back sheaf is the virtual normal sheaf of Stacks 0FBJ, and its constant rank \
 is PROVED, not assumed. CARRIED: the Stacks 0FBJ base-change clause of Stacks 0FBK as `hbase`, \
-the source's first proof step, recorded as not proved in this repository (Stacks 0637, 0FBH, \
-0F9J absent); and the hypotheses of Stacks 0FBL, unchanged (Stacks 0FAA at the \
+the source's first proof step, the clause being proved in this repository for the completed class \
+at `completedBivariantRestriction_completedVirtualNormalGysinClass` (stacks 0FBK) and the binder \
+retained because this theorem abstracts over the class c; and the hypotheses of Stacks 0FBL, \
+unchanged (Stacks 0FAA at the \
 base-changed bundle projections as `hstep`, the geometric consequence of the factorization as \
 `hfactor`, Stacks 02TY injectivity as `hinj`, Stacks 0B7G as this directory's cap-rule \
 parameter)"]
