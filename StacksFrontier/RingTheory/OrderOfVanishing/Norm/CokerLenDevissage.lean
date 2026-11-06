@@ -2,7 +2,7 @@ module
 
 public import StacksCore.Tactic.StacksAttribute
 public import StacksFrontier.RingTheory.Lattice.Defs
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
 
 
 @[expose] public section

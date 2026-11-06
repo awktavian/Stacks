@@ -2,10 +2,10 @@ module
 
 public import StacksCore.Tactic.StacksAttribute
 public import StacksFrontier.RingTheory.Lattice.Defs
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.CokerLenDevissage
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.BaseChangeDetNorm
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.LocalizationLengthSum
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.CokerLenDevissage
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.BaseChangeDetNorm
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.LocalizationLengthSum
 
 
 @[expose] public section

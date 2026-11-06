@@ -2,8 +2,8 @@ module
 
 public import StacksCore.Tactic.StacksAttribute
 public import StacksFrontier.RingTheory.Lattice.Defs
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
-import StacksFrontier.RingTheory.OrderOfVanishing.Norm.CokerLenDevissage
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.OrdIntBasics
+public import StacksFrontier.RingTheory.OrderOfVanishing.Norm.CokerLenDevissage
 
 
 @[expose] public section
