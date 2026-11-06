@@ -75,6 +75,13 @@ namespace Stacks.PolynomialRing.PrimeStandardForm
 
 open Polynomial MvPolynomial Ideal RingHom List
 
+/-- Pin-shim for the rc4 Mathlib polynomial API: the standalone exponent-first
+`MvPolynomial.coeff s p` is gone (the coefficient is now the projection
+`AddMonoidAlgebra.coeff p` of the polynomial), so re-export the old spelling
+`coeff s p` locally. Statements in this file are unchanged by this alias. -/
+private abbrev coeff {σ R : Type _} [CommSemiring R] (s : σ →₀ ℕ) (p : MvPolynomial σ R) : R :=
+  AddMonoidAlgebra.coeff p s
+
 section Tilt
 
 open Nat
