@@ -297,9 +297,10 @@ private lemma mem_iff_forall_hom (J : GrothendieckTopology T)
 private noncomputable def presheafAction (P : Tᵒᵖ ⥤ Type u) : Action (Type u) G where
   V := P.obj (op u₀)
   ρ :=
-    { toFun := fun g => P.map (rAct ι α g).op
-      map_one' := by simp [rAct_one ι α]
-      map_mul' := fun g h => by simp [rAct_mul ι α, End.mul_def] }
+    { toFun := fun g => End.of (P.map (rAct ι α g).op)
+      map_one' := End.ext (by simp [rAct_one ι α, op_id, P.map_id])
+      map_mul' := fun g h => End.ext (by simp [rAct_mul ι α, End.mul_asHom, op_comp, P.map_comp,
+        types_comp_apply]) }
 
 /-- `presheafAction` is functorial in the presheaf: a morphism of presheaves is a `G`-map on the
 attached `G`-sets, its equivariance being naturality at the right translations. -/
@@ -307,7 +308,7 @@ private noncomputable def presheafActionMap {P Q : Tᵒᵖ ⥤ Type u} (η : P �
     presheafAction ι α P ⟶ presheafAction ι α Q
     where
   hom := η.app (op u₀)
-  comm := fun g => η.naturality (rAct ι α g).op
+  comm := fun g => η.naturality ((rAct ι α g).op)
 
 /-- Two successive restrictions of a section of a presheaf compose. -/
 private lemma map_op_comp (P : Tᵒᵖ ⥤ Type u) {V W Z : T} (f : V ⟶ W) (g : W ⟶ Z)
@@ -552,16 +553,19 @@ private noncomputable def fullyFaithfulPresheafYoneda : (presheafYoneda ι).Full
 private lemma faithful_sheafYoneda (J : GrothendieckTopology T)
     (hcov : ∀ (V : T) (R : Sieve V), R ∈ J V ↔ ∀ h : u₀ ⟶ V, R.arrows h) :
     (sheafYoneda ι α J hcov).Faithful :=
-  have := (fullyFaithfulPresheafYoneda ι α).faithful
-  Functor.Faithful.of_comp_eq (F := sheafYoneda ι α J hcov) (G := sheafToPresheaf J (Type u)) (H :=
-    presheafYoneda ι) rfl
+  by
+  haveI : (presheafYoneda ι).Faithful := (fullyFaithfulPresheafYoneda ι α).faithful
+  exact Functor.Faithful.of_comp_eq (F := sheafYoneda ι α J hcov)
+    (G := sheafToPresheaf J (Type u)) (H := presheafYoneda ι) rfl
 
 private lemma full_sheafYoneda (J : GrothendieckTopology T)
     (hcov : ∀ (V : T) (R : Sieve V), R ∈ J V ↔ ∀ h : u₀ ⟶ V, R.arrows h) :
     (sheafYoneda ι α J hcov).Full :=
-  have := (fullyFaithfulPresheafYoneda ι α).full
-  Functor.Full.of_comp_faithful_iso (F := sheafYoneda ι α J hcov) (G := sheafToPresheaf J (Type u))
-    (H := presheafYoneda ι) (Iso.refl _)
+  by
+  haveI : (presheafYoneda ι).Full := (fullyFaithfulPresheafYoneda ι α).full
+  haveI : (sheafToPresheaf J (Type u)).Faithful := (fullyFaithfulSheafToPresheaf J (Type u)).faithful
+  exact Functor.Full.of_comp_faithful_iso (F := sheafYoneda ι α J hcov)
+    (G := sheafToPresheaf J (Type u)) (H := presheafYoneda ι) (Iso.refl _)
 
 private lemma essSurj_sheafYoneda (J : GrothendieckTopology T)
     (hcov : ∀ (V : T) (R : Sieve V), R ∈ J V ↔ ∀ h : u₀ ⟶ V, R.arrows h) :
