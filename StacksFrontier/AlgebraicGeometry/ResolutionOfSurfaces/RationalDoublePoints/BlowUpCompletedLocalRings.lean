@@ -12,6 +12,7 @@ public import StacksFrontier.AlgebraicGeometry.FormalGeometry.Completion.StalkBa
 public import StacksFrontier.AlgebraicGeometry.Groupoids.IdealSheafComap
 public import StacksFrontier.AlgebraicGeometry.Models.Normalization
 public import StacksFrontier.AlgebraicGeometry.Properties.Normal
+public import StacksFrontier.AlgebraicGeometry.ResolutionOfSurfaces.RationalSingularities.BlowUpNormal
 public import StacksFrontier.RingTheory.AdicCompletion.Flat
 public import StacksFrontier.RingTheory.AdicCompletion.NoetherianRing
 public import StacksFrontier.RingTheory.Excellent.Basic
@@ -50,10 +51,13 @@ so its local rings are excellent, and normality ascends from an excellent normal
 its completion.
 
 The hypothesis `hnormal` is [Stacks, Tag 0BG7]'s appeal to [Stacks, Tag 0B4Z] at the completion
-`A^`; it is carried, that tag being absent from this development. The source's remaining
-hypotheses on `A` — normal, Nagata, of dimension two, defining a rational singularity, with
-normal completion — are exactly what [Stacks, Tag 0B4Z] consumes there and play no further role,
-so they are not assumed here.
+`A^`; that tag is registered in this development as
+`AlgebraicGeometry.isNormal_blowUp_maximalIdeal_rationalSingularitySituation`, whose hypotheses
+are that the ring is a normal Nagata domain of dimension two defining a rational singularity.
+The source's remaining hypotheses on `A` — normal, Nagata, of dimension two, defining a rational
+singularity, with normal completion — are exactly what [Stacks, Tag 0B4Z] consumes at `A^` and
+play no further role here, so they are not assumed and this general form carries the conclusion
+of that tag as `hnormal`.
 
 ## References
 
@@ -157,14 +161,17 @@ private theorem isNormalRing_adicCompletion_of_isExcellent (R : Type u) [CommRin
 `Spec A^` in the maximal ideal of the completion `A^` is normal, the completion of the local ring
 of the blowup of `Spec A` in the maximal ideal of `A` is a normal domain at every closed point.
 
-The hypothesis `hnormal` is [Stacks, Tag 0B4Z] for `A^`, which this development does not carry;
-in the source it is supplied by the hypotheses that `A` is a normal Nagata domain of dimension
-two defining a rational singularity whose completion is normal. -/
+The hypothesis `hnormal` is [Stacks, Tag 0B4Z] for `A^`, registered in this development as
+`isNormal_blowUp_maximalIdeal_rationalSingularitySituation`; in the source it is supplied by the
+hypotheses that `A` is a normal Nagata domain of dimension two defining a rational singularity
+whose completion is normal, and since this theorem assumes none of those it carries the tag's
+conclusion as `hnormal`. -/
 @[stacks 0BG7 "clause (2): the completion of the local ring at every closed point of the blowup \
 of Spec(A) in the maximal ideal is a normal domain. Tag 0B4Z at the completion — normality of \
-the blowup of Spec(A^) in the maximal ideal of A^ — is carried as the hypothesis `hnormal`, and \
-the source's hypotheses on A (normal Nagata domain of dimension two defining a rational \
-singularity with normal completion) are exactly what Tag 0B4Z consumes there"]
+the blowup of Spec(A^) in the maximal ideal of A^ — is registered in this development as \
+isNormal_blowUp_maximalIdeal_rationalSingularitySituation and carried here as the hypothesis \
+`hnormal`, the source's hypotheses on A (normal Nagata domain of dimension two defining a \
+rational singularity with normal completion) being exactly what that theorem consumes"]
 public theorem isNormalDomain_adicCompletion_stalk_blowUp_maximalIdeal
     (A : Type u) [CommRing A] [IsNoetherianRing A] [IsLocalRing A]
     (hnormal : IsNormal (blowUp (maximalIdealSheaf (AdicCompletion (maximalIdeal A) A))))
