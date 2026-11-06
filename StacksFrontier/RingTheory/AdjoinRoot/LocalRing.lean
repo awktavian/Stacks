@@ -59,9 +59,11 @@ private theorem comap_of_isMaximal_eq_maximalIdeal (hp : p.Monic) (Q : Ideal (Ad
     [Q.IsMaximal] :
     Q.comap (AdjoinRoot.of p) = maximalIdeal A := by
   have : Module.Finite A (AdjoinRoot p) := hp.finite_adjoinRoot
-  have : Algebra.IsIntegral A (AdjoinRoot p) := Algebra.IsIntegral.of_finite A (AdjoinRoot p)
+  have hint : Algebra.IsIntegral A (AdjoinRoot p) := Algebra.IsIntegral.of_finite A (AdjoinRoot p)
   rw [← AdjoinRoot.algebraMap_eq]
-  exact (IsLocalRing.isMaximal_iff A).mp (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal Q)
+  exact (IsLocalRing.isMaximal_iff A).mp
+    (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (algebraMap A (AdjoinRoot p))
+      (algebraMap_isIntegral_iff.mpr hint) Q)
 
 /-- **A monogenic algebra with monic irreducible reduction over a local ring is local.** Every
 maximal ideal of `AdjoinRoot p` contracts to `𝔪` (the algebra is integral over `A`), hence contains
