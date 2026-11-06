@@ -93,8 +93,6 @@ lemma mk_matrix_eq_one (n : Type) [Nonempty n] [Fintype n] [DecidableEq n] :
   have e1 := Matrix.uniqueAlgEquiv (m := Fin 1) (R := k) (A := Matrix n n k)
   refine AlgEquiv.trans ?_ <| Matrix.reindexAlgEquiv k k (Fintype.equivFin n)
   convert e1
-  · rfl
-  · rfl
 
 @[elab_as_elim]
 protected theorem induction (x : BrauerGroup k) (P : BrauerGroup k → Prop) (h : ∀ (A : Type v)
