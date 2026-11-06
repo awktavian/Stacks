@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.Algebra.Homology.HomologicalComplexLimits
+public import Mathlib.Algebra.Homology.HomologySequence
 public import Mathlib.Algebra.Homology.HomotopyCategory.Acyclic
 public import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
 public import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
