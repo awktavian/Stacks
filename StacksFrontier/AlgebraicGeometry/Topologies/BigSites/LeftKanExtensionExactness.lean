@@ -2,6 +2,7 @@ module
 
 public import Mathlib.CategoryTheory.Functor.Flat
 public import Mathlib.CategoryTheory.Functor.KanExtension.Adjunction
+public import Mathlib.CategoryTheory.Limits.FilteredColimitCommutesFiniteLimit
 
 /-!
 # Left Kan extension along a flat functor is left exact
@@ -55,7 +56,7 @@ public theorem lan_preservesFiniteLimits_of_representablyFlat.{s₁, s₂, w, x�
   intro I _ _
   apply preservesLimitsOfShape_of_evaluation _ I
   intro Y
-  have : IsFiltered (CostructuredArrow F.op Y) :=
+  haveI : IsFiltered (CostructuredArrow F.op Y) :=
     IsFiltered.of_equivalence (structuredArrowOpEquivalence F Y.unop)
   exact preservesLimitsOfShape_of_natIso
     (lanEvaluationIsoColimit (Type w) F.op Y).symm
