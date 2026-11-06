@@ -1,6 +1,8 @@
 module
 
 public import Mathlib.Topology.Spectral.ConstructibleTopology
+public import Mathlib.Topology.Spectral.Basic
+public import Mathlib.Topology.WithTopology
 import StacksCore.Tactic.EgaSgaAttribute
 
 /-!
