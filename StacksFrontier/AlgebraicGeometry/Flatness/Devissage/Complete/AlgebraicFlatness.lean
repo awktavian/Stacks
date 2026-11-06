@@ -27,18 +27,37 @@ finite presentation over `Spec A` with `A` local, a finite type quasi-coherent `
 carrying a complete dévissage at a point over the closed point of `Spec A`, and flat over
 `Spec A` there, is of finite presentation and flat over `Spec A` *everywhere*.
 
-The dictionary of Stacks 05I0 is not yet available in this repository, so it enters as the
-hypothesis `AlgebraicGeometry.GeometricCompleteDevissageAtGivesAlgebraic`. Only the direction
-the source itself uses — a geometric complete dévissage yields an algebraic one — is assumed;
-the converse needs an input about the dimension of *every* fibre of a smooth morphism with
-geometrically irreducible fibres which the repository does not have, and Stacks 05I0 explicitly
-says that only the direction assumed here is ever used.
+The dictionary of Stacks 05I0 is a proved fact of this repository, not an input carried from
+the source. Its forward direction — a geometric complete dévissage at a point gives an
+algebraic one, the only direction the source uses — is registered as
+`Module.nonempty_completeDevissageAt_of_completeDevissageAt` (the `@[stacks 05I0]` theorem of
+`StacksFrontier/AlgebraicGeometry/Flatness/Devissage/Complete/AlgebraTranslationAt.lean`), and
+in the ring-map shape stated below it is proved outright as
+`AlgebraicGeometry.geometricCompleteDevissageAtGivesAlgebraic` in
+`StacksFrontier/AlgebraicGeometry/Flatness/Devissage/Complete/SpecTranslation.lean`, which
+identifies `Γ(Spec A, ⊤)`, `Γ(Spec B, ⊤)` and `Γ(Ñ, ⊤)` with `A`, `B` and `N` through
+`Module.nonempty_completeDevissageAt_ofRingEquiv`. The results below nevertheless take the
+forward direction as the single hypothesis
+`AlgebraicGeometry.GeometricCompleteDevissageAtGivesAlgebraic`: the Stacks 05I5 proof in
+`StacksFrontier/AlgebraicGeometry/Etale/ElementaryNeighborhoodFlatness.lean` applies
+`AlgebraicGeometry.isFinitePresentation_isFlatOver_of_completeDevissageAt` with
+`AlgebraicGeometry.geometricCompleteDevissageAtGivesAlgebraic` at the hypothesis position, so
+the binder stays in the signature and the consumers discharge it from the repository rather
+than from an assumed citation. The equivalence of the two existence statements is
+`Module.nonempty_completeDevissageAt_iff` in
+`StacksFrontier/AlgebraicGeometry/Flatness/Devissage/Complete/SpecCompleteDevissageAt.lean`;
+its converse half keeps the stage-by-stage fibre condition
+`Module.CompleteDevissageAt.FibresHaveRelativeDimension` as a hypothesis, since the source's
+unconditional converse needs the dimension of *every* fibre of a smooth morphism with
+geometrically irreducible fibres.
 
 ## Main definitions
 
 * `AlgebraicGeometry.GeometricCompleteDevissageAtGivesAlgebraic` is the forward implication of
   Stacks 05I0 (2), stated as a proposition so that the results depending on it take it as a
-  single hypothesis.
+  single hypothesis; `AlgebraicGeometry.geometricCompleteDevissageAtGivesAlgebraic` in
+  `SpecTranslation.lean` proves it from the registered `@[stacks 05I0]` theorem of
+  `AlgebraTranslationAt.lean`.
 
 ## Main results
 
@@ -164,7 +183,7 @@ lemma nonempty_completeDevissageAt_of_eq {X S : Scheme.{u}} {f f' : X ⟶ S} (hf
   subst hf
   exact h
 
-/-! ### The dictionary of Stacks 05I0, as a hypothesis -/
+/-! ### The dictionary of Stacks 05I0, as a single hypothesis -/
 
 /-- **Stacks Project, Tag 05I0**, the direction the source uses, as a proposition.
 
@@ -175,7 +194,13 @@ dévissage at `q`.
 
 Stacks 05I0 states the equivalence of the two existence statements and notes that only this
 direction is ever used; this proposition is therefore the hypothesis the consumers below take.
-The equivalence itself is `Module.nonempty_completeDevissageAt_iff` in
+It is no longer an assumption of the repository: it is proved as
+`AlgebraicGeometry.geometricCompleteDevissageAtGivesAlgebraic` in
+`StacksFrontier/AlgebraicGeometry/Flatness/Devissage/Complete/SpecTranslation.lean`, which
+wires the registered theorem `Module.nonempty_completeDevissageAt_of_completeDevissageAt`
+(`@[stacks 05I0]`, `AlgebraTranslationAt.lean`) through the ring identifications of
+`Module.nonempty_completeDevissageAt_ofRingEquiv`. The equivalence itself is
+`Module.nonempty_completeDevissageAt_iff` in
 `StacksFrontier/AlgebraicGeometry/Flatness/Devissage/Complete/SpecCompleteDevissageAt.lean`. -/
 def GeometricCompleteDevissageAtGivesAlgebraic : Prop :=
   ∀ (A B : Type u) [CommRing A] [CommRing B] [Algebra A B] [Algebra.FiniteType A B]
