@@ -31,8 +31,11 @@ and the specified ideal, and the choice of representative of the associated clos
 immaterial to them. The commuting isomorphisms identify the ideal sheaf and the quotient
 structure sheaf canonically, not merely up to an arbitrary isomorphism.
 
-Existence of such data for a locally generated ideal sheaf is Tag 01HN and is not proved here;
-nothing below needs it, since the uniqueness statement takes the data as a hypothesis.
+Existence of such data for a locally generated ideal sheaf is Tag 01HN: it is proved in-repo by
+`Stacks.ClosedImmersion.exists_closedSubspaceData` and chosen by
+`Stacks.ClosedImmersion.closedSubspace`, registered `@[stacks 01HN]` in
+`ClosedSubspaceExistence.lean`. Nothing below needs it, since the uniqueness statement takes
+the data as a hypothesis.
 
 The uniqueness itself is the general monomorphism statement
 `Stacks.ClosedImmersion.subsingleton_factorizations` applied to `D.inclusion`, with
