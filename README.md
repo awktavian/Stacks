@@ -6,11 +6,11 @@
 
 A Lean 4 formalization of [the Stacks Project](https://stacks.math.columbia.edu/), the open-source reference work on algebraic geometry, built on [Mathlib](https://github.com/leanprover-community/mathlib4). The compiler version is pinned in [lean-toolchain](lean-toolchain).
 
-The project's reported coverage is every Stacks tag with formalizable content; remaining examples, exercises and remarks are contributor tasks. A tag can describe a partial result, so inspect the declaration's statement and tag comment before reusing it. Declarations also carry references to Grothendieck's *Éléments de géométrie algébrique* (EGA) and *Séminaire de géométrie algébrique* (SGA).
+Coverage includes every Stacks tag with formalizable content. A tag may be partially formalized: inspect the declaration's statement and the tag comment to see what part it covers. Declarations also carry references to Grothendieck's *Éléments de géométrie algébrique* (EGA) and *Séminaire de géométrie algébrique* (SGA).
 
 **Start here:** [find a tag](#finding-a-tag) · [choose an import](#structure) · [check a result](#checking-a-result) · [contribute](#contributing)
 
-Coverage, human review and proof certification are separate questions. The intended trust boundary is Lean's kernel with only the three standard axioms, without `sorry` or `native_decide`. Those are verification requirements, not a certificate for an arbitrary checkout; see [Checking a result](#checking-a-result).
+Coverage, human review, and proof status are independent. The trust boundary for a declaration is Lean's kernel: its proof must use only the three standard axioms (`propext`, `Classical.choice`, `Quot.sound`), no `sorry`, and no `native_decide`. This is a verification requirement, not a claim about the mathematical statement; see [Checking a result](#checking-a-result).
 
 ## Structure
 
@@ -21,18 +21,18 @@ Coverage, human review and proof certification are separate questions. The inten
 
 ## Finding a tag
 
-A declaration that formalizes all or part of a Stacks tag carries the attribute `@[stacks TAG]`, for example `@[stacks 00DS]`; a tag that Mathlib already covers is registered on the Mathlib declaration with `add_to_stacks TAG`. A tag can be carried by several declarations, and a comment in the attribute records which part of the tag a declaration covers when it covers only part. After `import Stacks`, the command `#stacks_tags` lists every tagged declaration with its tag, and `#stacks_tags!` also prints each statement. The [website](https://stacks.axiommath.ai/) links each tag to its Lean code, its dependencies and the Stacks Project's own statement.
+A declaration carrying `@[stacks TAG]` formalizes all or part of that Stacks tag. A tag claimed by Mathlib carries `add_to_stacks TAG` instead. A single tag may appear on multiple declarations; when a declaration covers only part of the tag, the attribute's comment explains which part. Example: `@[stacks 00DS "part (1)"]` or `@[stacks 00DS "affine case"]`. After `import Stacks`, the command `#stacks_tags` lists all tagged declarations with their tags, and `#stacks_tags!` adds the statement text. The [website](https://stacks.axiommath.ai/) links each tag to its Lean code, dependencies, and the Stacks Project text.
 
 ## EGA and SGA references
 
-Declarations are also tagged with the numbered items of Grothendieck's *Éléments de géométrie algébrique* (EGA) and *Séminaire de géométrie algébrique* (SGA) that they prove, with `@[ega "IV 7.8.3"]` or `@[sga "4 IV 4.9.4"]`, or with `add_to_ega` / `add_to_sga` for a Mathlib declaration. A declaration carries a reference exactly when it proves one of the following, and the attribute's comment says which:
+Declarations proving content from Grothendieck's works carry `@[ega "IV 7.8.3"]` or `@[sga "4 IV 4.9.4"]` (or `add_to_ega` / `add_to_sga` for Mathlib declarations). A reference means the declaration proves exactly one of:
 
-* the whole item: no comment;
-* a more general statement than the item: `"more general"`;
-* some of the item's clauses: the clauses, for example `"(ii)"`;
-* a special case of the item: the restriction, for example `"affine case"`.
+* the whole numbered item (no comment);
+* a more general result (comment: `"more general"`);
+* specific clauses of a multi-part item (comment: `"(ii)"` or `"(ii), (iii)"`);
+* a special case (comment: `"affine case"` or similar).
 
-A declaration that is only related to an item, without proving any of these, is not tagged with it. Numbers follow the original installments: Publ. Math. IHÉS for EGA, and the standard Springer Lecture Notes editions for SGA.
+Declarations only tangentially related to an item are not tagged with it. Theorem numbers use the original publication: Publ. Math. IHÉS for EGA, standard Springer Lecture Notes for SGA.
 
 ## Checking a result
 
@@ -49,9 +49,9 @@ Run a probe with `lake env lean path/to/Probe.lean` once its dependencies are bu
 
 ### Axioms
 
-A proof-dependency receipt meets the standard-axiom requirement only when its axiom set is a subset of `propext`, `Classical.choice` and `Quot.sound`. An empty set is valid; `sorryAx`, custom axioms and native-decision trust axioms are not. A successful compiler exit alone does not establish this: Lean can accept a `sorry` with a warning. An imported compiled file alone does not certify that its current source was checked.
+The axiom receipt is the output of `#print axioms DeclarationName` for each declaration you reuse. A proof is clean when its axiom set is exactly a subset of `{propext, Classical.choice, Quot.sound}`. An empty set is valid; sorries, sorryAx, custom axioms, and native-decision trust are not. A successful compile does not establish this by itself: Lean can compile `sorry` with a warning, and a precompiled file does not certify its source.
 
-The receipt covers the named declaration, not every tag or module. It also does not establish that the Lean statement matches the cited mathematical result: check its hypotheses, conclusion, intended objects and partial-coverage comment separately. Explicit hypotheses remain assumptions even when the axiom receipt is clean.
+The receipt is specific: it covers the named declaration, not a tag, module, or tier. It does not establish that the statement formalizes the mathematical claim: you must verify the hypotheses, conclusion, the objects it operates on, and any partial-coverage note separately. Explicit hypotheses in a theorem statement are assumptions regardless of axiom status.
 
 The EGA/SGA registration utilities have a bounded native regression test, requiring only the pinned compiler (no Mathlib download or full library build):
 

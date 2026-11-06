@@ -22,8 +22,8 @@ Every pull request, to either tier, is reviewed by the maintainers: Kenny Lau, B
 
 ## Conventions
 
-* Attach `@[stacks TAG]` to the declaration that formalizes a tag. If it covers only part of the tag, say which part in the attribute's comment, for example `@[stacks 00DS "part (1)"]`. Register a tag that Mathlib already covers with `add_to_stacks`.
-* State the result the Stacks Project states, in its generality. Do not weaken a statement to make it provable; if a statement is wrong, say so in the claim.
-* Place each file in the module matching its mathematical topic, and reuse existing definitions rather than introducing parallel ones.
-* No `sorry`, `admit`, `native_decide` or new `axiom`. `#print axioms` on your results should list only `propext`, `Classical.choice` and `Quot.sound`.
+* Attach `@[stacks TAG]` to the declaration that formalizes a tag, adding a comment if it covers only part, for example `@[stacks 00DS "part (1)"]`. Use `add_to_stacks TAG` for a Mathlib declaration.
+* State the result as the Stacks Project states it, in its full generality. Do not weaken a statement to make it provable. If the statement is wrong or incomplete, note that in your claim.
+* Place each file in the module matching its topic. Reuse existing definitions rather than introducing parallel ones.
+* No `sorry`, `admit`, `native_decide`, or new `axiom`. Running `#print axioms DeclarationName` must list only `propext`, `Classical.choice`, and `Quot.sound`.
 * Follow Mathlib's naming and style conventions.
