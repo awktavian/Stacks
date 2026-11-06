@@ -33,6 +33,7 @@ public import Mathlib.Tactic.NormNum.Parity
 public import Mathlib.Tactic.NormNum.Prime
 public import Mathlib.Tactic.NormNum.RealSqrt
 public import Mathlib.Topology.Sheaves.Sheafify
+public import Mathlib.Topology.Sheaves.Functors
 import StacksCore.Tactic.EgaSgaAttribute
 
 /-!
