@@ -71,17 +71,17 @@ namespace Stacks.ModuleCatLift
 public def mapEndRingHom {D₁ : Type u₁} [Category.{v₁} D₁] [Preadditive D₁] {D₂ : Type u₂}
     [Category.{v₂} D₂] [Preadditive D₂] (H : D₁ ⥤ D₂) [H.Additive] (Z : D₁) :
     End Z →+* End (H.obj Z) where
-  toFun := H.map
-  map_one' := H.map_id Z
-  map_mul' _ _ := H.map_comp _ _
-  map_zero' := H.map_zero Z Z
-  map_add' _ _ := H.map_add
+  toFun e := .of (H.map e.asHom)
+  map_one' := End.ext (H.map_id Z)
+  map_mul' _ _ := End.ext (H.map_comp _ _)
+  map_zero' := End.ext (H.map_zero Z Z)
+  map_add' _ _ := End.ext H.map_add
 
 /-- Whiskering on the left, as a map of endomorphism rings of a functor. -/
 public def whiskerLeftEndRingHom {K : Type u₁} [Category.{v₁} K] {A : Type u₂}
     [Category.{v₂} A] {Bc : Type u₃} [Category.{v₃} Bc] [Preadditive Bc] (P : K ⥤ A)
     (H : A ⥤ Bc) : End H →+* End (P ⋙ H) where
-  toFun α := Functor.whiskerLeft P α
+  toFun α := .of (Functor.whiskerLeft P α.asHom)
   map_one' := rfl
   map_mul' _ _ := rfl
   map_zero' := rfl
@@ -99,7 +99,7 @@ public def appEnd {P : K ⥤ AddCommGrpCat.{w}} (φ : Λ →+* End P) (U : K) :
 /-- The action `appEnd φ U` sends `a` to the component at `U` of `φ a`. -/
 @[simp]
 public lemma appEnd_apply {P : K ⥤ AddCommGrpCat.{w}} (φ : Λ →+* End P) (U : K) (a : Λ) :
-    appEnd Λ φ U a = (φ a).app U :=
+    appEnd Λ φ U a = .of ((φ a).asHom.app U) :=
   rfl
 
 /-- A functor to abelian groups together with an action of `Λ` on it, read as a functor to
@@ -108,7 +108,7 @@ evaluated at `U`, and the restriction maps are those of `P`, which are `Λ`-line
 naturality of `φ`. -/
 public def ofEndAction (P : K ⥤ AddCommGrpCat.{w}) (φ : Λ →+* End P) : K ⥤ ModuleCat.{w} Λ where
   obj U := ModuleCat.mkOfSMul (appEnd Λ φ U)
-  map g := ModuleCat.homMk (P.map g) fun a => (φ a).naturality g
+  map g := ModuleCat.homMk (P.map g) fun a => (φ a).asHom.naturality g
   map_id U := (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map_injective (by
     change P.map (𝟙 U) = 𝟙 _
     rw [P.map_id])
@@ -132,7 +132,7 @@ public lemma forget₂_map_ofEndAction_map (P : K ⥤ AddCommGrpCat.{w}) (φ : �
 /-- A morphism of functors to abelian groups commuting with the actions of `Λ`, read as a
 morphism of functors to `Λ`-modules. -/
 public def ofEndActionMap {P Q : K ⥤ AddCommGrpCat.{w}} (φ : Λ →+* End P) (ψ : Λ →+* End Q)
-    (α : P ⟶ Q) (hα : ∀ a : Λ, φ a ≫ α = α ≫ ψ a) :
+    (α : P ⟶ Q) (hα : ∀ a : Λ, (φ a).asHom ≫ α = α ≫ (ψ a).asHom) :
     ofEndAction Λ P φ ⟶ ofEndAction Λ Q ψ where
   app U := ModuleCat.homMk (α.app U) fun a => (NatTrans.congr_app (hα a) U).symm
   naturality U V g := (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map_injective (by
@@ -143,7 +143,7 @@ public def ofEndActionMap {P Q : K ⥤ AddCommGrpCat.{w}} (φ : Λ →+* End P) 
 is `α.app U`. -/
 @[simp]
 public lemma forget₂_map_ofEndActionMap_app {P Q : K ⥤ AddCommGrpCat.{w}} (φ : Λ →+* End P)
-    (ψ : Λ →+* End Q) (α : P ⟶ Q) (hα : ∀ a : Λ, φ a ≫ α = α ≫ ψ a) (U : K) :
+    (ψ : Λ →+* End Q) (α : P ⟶ Q) (hα : ∀ a : Λ, (φ a).asHom ≫ α = α ≫ (ψ a).asHom) (U : K) :
     (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map ((ofEndActionMap Λ φ ψ α hα).app U) =
       α.app U :=
   rfl
@@ -166,7 +166,7 @@ public def sheafOfEndAction (F : Sheaf J AddCommGrpCat.{w}) (φ : Λ →+* End F
 that identification as a map of endomorphism rings. -/
 public def homMkEndRingHom {D : Type u₂} [Category.{v₂} D] [Preadditive D]
     (P : ObjectProperty D) (Z : P.FullSubcategory) : End Z.obj →+* End Z where
-  toFun := ObjectProperty.homMk
+  toFun e := .of (ObjectProperty.homMk e.asHom)
   map_one' := rfl
   map_mul' _ _ := rfl
   map_zero' := rfl
@@ -182,7 +182,7 @@ public def presheafScalarEnd {K : Type u₂} [Category.{v₂} K] (P : K ⥤ Modu
 /-- The component at `U` of `presheafScalarEnd P a` is multiplication by `a` on `P.obj U`. -/
 @[simp]
 public lemma presheafScalarEnd_app {K : Type u₂} [Category.{v₂} K] (P : K ⥤ ModuleCat.{w} Λ)
-    (a : Λ) (U : K) : (presheafScalarEnd Λ P a).app U = (P.obj U).smul a :=
+    (a : Λ) (U : K) : (presheafScalarEnd Λ P a).asHom.app U = ((P.obj U).smul a).asHom :=
   rfl
 
 variable [J.HasSheafCompose (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w})]
@@ -197,21 +197,21 @@ public def sheafScalarEnd (F : Sheaf J (ModuleCat.{w} Λ)) :
 /-- The morphism of presheaves underlying `sheafScalarEnd F a` is `presheafScalarEnd F.obj a`. -/
 @[simp]
 public lemma sheafScalarEnd_hom (F : Sheaf J (ModuleCat.{w} Λ)) (a : Λ) :
-    (sheafScalarEnd Λ J F a).hom = presheafScalarEnd Λ F.obj a :=
+    (sheafScalarEnd Λ J F a).asHom.hom = (presheafScalarEnd Λ F.obj a).asHom :=
   rfl
 
 /-- A morphism of sheaves of `Λ`-modules commutes with multiplication by a scalar on the
 underlying abelian sheaves: this is its `Λ`-linearity. -/
 public lemma sheafScalarEnd_naturality {F₁ F₂ : Sheaf J (ModuleCat.{w} Λ)} (φ : F₁ ⟶ F₂)
     (a : Λ) :
-    sheafScalarEnd Λ J F₁ a ≫
+    (sheafScalarEnd Λ J F₁ a).asHom ≫
         (sheafCompose J (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w})).map φ =
       (sheafCompose J (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w})).map φ ≫
-        sheafScalarEnd Λ J F₂ a := by
+        (sheafScalarEnd Λ J F₂ a).asHom := by
   refine ObjectProperty.hom_ext _ (NatTrans.ext (funext fun U => ?_))
-  show (F₁.obj.obj U).smul a ≫
+  show ((F₁.obj.obj U).smul a).asHom ≫
       (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map (φ.hom.app U) =
-    (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map (φ.hom.app U) ≫ (F₂.obj.obj U).smul a
+    (forget₂ (ModuleCat.{w} Λ) AddCommGrpCat.{w}).map (φ.hom.app U) ≫ ((F₂.obj.obj U).smul a).asHom
   exact (ModuleCat.smul_naturality (φ.hom.app U) a).symm
 
 end Sheaf
