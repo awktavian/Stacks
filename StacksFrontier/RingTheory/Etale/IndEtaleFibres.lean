@@ -4,6 +4,7 @@ public import Mathlib.Algebra.Colimit.Ring
 public import Mathlib.Algebra.Lie.OfAssociative
 public import Mathlib.RingTheory.Etale.Field
 public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.HopkinsLevitzki
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
 import StacksCore.Tactic.EgaSgaAttribute
