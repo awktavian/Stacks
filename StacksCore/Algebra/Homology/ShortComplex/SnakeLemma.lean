@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Algebra.Homology.ShortComplex.SnakeLemma
+import Mathlib.CategoryTheory.Abelian.Refinements
 import StacksCore.Tactic.StacksAttribute
 
 /-! ## Snake Lemma -/
