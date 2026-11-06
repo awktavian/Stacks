@@ -64,6 +64,32 @@ variable {C : Type u₁} [Category.{v₁} C]
 variable {S : Type u₂} [Category.{v₂} S]
 variable {S' : Type u₃} [Category.{v₃} S']
 
+/-! #### Compatibility shims for the `Aut` API
+
+Upstream Mathlib restructured `CategoryTheory.Aut` to carry the single field `asIso`
+(the former `hom`/`inv` fields were removed). The statements below use the
+projections `Aut.hom` / `Aut.inv`; these shims restore them definitionally. -/
+
+universe u v
+
+namespace Aut
+
+/-- The underlying morphism of an automorphism. -/
+protected def hom {C : Type u} [Category.{v} C] {X : C} (f : Aut X) : X ⟶ X := f.asIso.hom
+
+/-- The inverse morphism of an automorphism. -/
+protected def inv {C : Type u} [Category.{v} C] {X : C} (f : Aut X) : X ⟶ X := f.asIso.inv
+
+/-- An automorphism composed with its inverse is the identity. -/
+protected lemma hom_inv_id {C : Type u} [Category.{v} C] {X : C} (f : Aut X) :
+    f.hom ≫ f.inv = 𝟙 X := f.asIso.hom_inv_id
+
+/-- The inverse of an automorphism composed with it is the identity. -/
+protected lemma inv_hom_id {C : Type u} [Category.{v} C] {X : C} (f : Aut X) :
+    f.inv ≫ f.hom = 𝟙 X := f.asIso.inv_hom_id
+
+end Aut
+
 /-- **Stacks 034I.** An object of the relative inertia category `I_{S/S'}` for a
 functor `F : S ⥤ S'`: a pair `(x, α)` with `α : Aut x` such that `F(α) = id_{F(x)}`.
 The relative inertia `I_{S/S'}` (and the absolute inertia `I_S = I_{S/C}`) is the
