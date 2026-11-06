@@ -24,13 +24,15 @@ sections* (`AlgebraicGeometry.RingedSite.isRightAdjoint_ι_isDerivedComplete_gen
 of `GeneratedIdealAdjoint.lean`) and for one whose local sections are nilpotent
 (`isRightAdjoint_ι_isDerivedComplete_of_forall_isNilpotent` of `NilpotentIdeal.lean`), and the
 four tags above are registered, honestly and partially, in those two regimes. At an arbitrary
-finite-type sheaf of ideals Tag 099F rests on [Stacks, Tag 099E], the global object `K ⟶ 𝒪` with
-`E^∧ = R𝓗om_𝒪(K, E)`, and that object is under construction elsewhere.
+finite-type sheaf of ideals Tag 099F rests on [Stacks, Tag 099E], the global object `K ⟶ 𝒪`
+with `E^∧ = R𝓗om_𝒪(K, E)`; that object is now in this library, as `exists_isGlobalExtendedCech`
+([Stacks, Tag 099E]) of `FiniteTypeExtendedCech.lean`, and the tag is carried on it by the
+instance `isRightAdjoint_ι_isDerivedComplete` ([Stacks, Tag 099F]) of `FiniteTypeReflector.lean`.
 
 ## Why nothing in this file carries a `@[stacks]` attribute
 
-**This file registers no tag, and it is written that way on purpose.** Every statement below
-takes the *conclusion* of [Stacks, Tag 099F] as a hypothesis — written as the instance binder
+**This file registers no tag, and it is written that way on purpose.** Each statement below
+once took the *conclusion* of [Stacks, Tag 099F] as a hypothesis — written as the instance binder
 
 ```
 [(ObjectProperty.ι (AlgebraicGeometry.RingedSite.IsDerivedComplete X I')).IsRightAdjoint]
@@ -38,31 +40,38 @@ takes the *conclusion* of [Stacks, Tag 099F] as a hypothesis — written as the 
 
 which is exactly what
 `AlgebraicGeometry.RingedSite.isRightAdjoint_ι_isDerivedComplete_generatedIdealSheaf` supplies
-for a *generated* ideal sheaf and what [Stacks, Tag 099E] would supply for an arbitrary
-finite-type one. A tag counts only on a declaration proved under the source's own hypotheses, so
+for a *generated* ideal sheaf and what [Stacks, Tag 099E] supplies for an arbitrary finite-type
+one: `exists_isGlobalExtendedCech` (`FiniteTypeExtendedCech.lean`, registered `@[stacks 099E]`)
+has landed, and `FiniteTypeReflector.lean` registers the conclusion `@[stacks 099F]` as the
+instance `isRightAdjoint_ι_isDerivedComplete`, which this file imports — the binder therefore
+resolves by instance search and no statement below still assumes it. A tag counts only on a
+declaration proved under the source's own hypotheses, so
 a statement that assumes a result the source *derives* before stating the tag must not carry the
 tag; it is an engine. Consequently:
 
-* no declaration in this file has a `@[stacks]` attribute, and none should be given one until
-  [Stacks, Tag 099E] lands;
+* no declaration in this file has a `@[stacks]` attribute: none should be given one while
+  `hsource`, `htarget` and `hproj` — the conclusions of [Stacks, Tags 0A0E and 0944] which the
+  source derives inside its own proofs — remain assumptions;
 * the partial registrations the four tags already carry elsewhere — in
   `PushforwardCommutesCompletion.lean`, `PushforwardCommutesCompletionGenerated.lean`,
   `PushforwardCommutesCompletionSpaces.lean`, `GlobalSectionsCompletion.lean`,
   `GlobalSectionsCompletionGenerated.lean`, `UnboundedGlobalSections.lean` and
   `Completion/CohomologyAdicCompletion.lean` — are untouched by this file, which adds
   statements and removes nothing;
-* once [Stacks, Tag 099E] is available, each statement below becomes a registration of its tag
-  by deleting the instance binder and nothing else: no proof here uses the binder for anything
-  except to write `(-)^∧` down.
+* with [Stacks, Tag 099E] available the instance binder is discharged — no proof here uses it
+  for anything except to write `(-)^∧` down — and the remaining distance from each statement to
+  a registration of its tag is exactly the discharge of `hsource`, `htarget` and `hproj`;
 
-The instance binder is deliberately an instance binder rather than a named hypothesis, so that
-it is *visible* in the signature as an unfulfilled assumption and cannot be mistaken for
-something the data provides.
+The adjoint was written as an instance binder while it was outstanding, so that it stayed
+*visible* in the signature as an unfulfilled assumption; with `isRightAdjoint_ι_isDerivedComplete`
+now proved under `ℐ.toSheafOfModules.IsFiniteType` alone, instance search supplies it from the
+finite-type datum — the way the source's Proposition 52.6.12 makes the functor available.
 
 ## What is carried besides [Stacks, Tag 099F], and why
 
-[Stacks, Tag 099F] is **not** the only thing the full statements need, and the extra inputs are
-carried explicitly and named rather than hidden. The source's proof of Tag 0A0G, after invoking
+Tag 099F is discharged by instance search (`isRightAdjoint_ι_isDerivedComplete`), but it was
+**never** the only thing the full statements need: the extra inputs are carried explicitly and
+named rather than hidden. The source's proof of Tag 0A0G, after invoking
 Tag 099F, rewrites both sides by the Koszul formula `K^∧ = R lim (K ⊗^𝐋 K_n)` of
 [Stacks, Tag 0A0E], exchanges `Rf_*` with `R lim`, and finishes with the projection formula
 [Stacks, Tag 0944] together with `Lf^*K(𝒪, f_1^n, …, f_r^n) = K(𝒪', g_1^n, …, g_r^n)`. Of those
@@ -99,15 +108,15 @@ plain isomorphism of towers. That is the mathematical content of each statement 
   `ℕᵒᵖ`-towers in a pretriangulated category are isomorphic.
 * `RingedSite.nonempty_iso_derivedPushforward_derivedCompletion_of_isDerivedLimit`:
   **[Stacks, Tags 0A0G and 0A0I] for an arbitrary `K` at an arbitrary finite-type pair of ideal
-  sheaves**, `Rf_*(K^∧) ≅ (Rf_*K)^∧`, from [Stacks, Tag 099F] as the instance binder and
-  [Stacks, Tags 0A0E and 0944] as `hsource`, `htarget`, `hproj`.
+  sheaves**, `Rf_*(K^∧) ≅ (Rf_*K)^∧`, with the adjoint of [Stacks, Tag 099F] discharged by
+  instance search and [Stacks, Tags 0A0E and 0944] carried as `hsource`, `htarget`, `hproj`.
 * `RingedSite.exists_iso_derivedCompletion_derivedGlobalSections_of_isDerivedLimit`:
   **[Stacks, Tag 0BLX]'s identity `RΓ(𝒞, ℱ)^∧ = RΓ(𝒞, ℱ^∧)` at an arbitrary finite-type ideal
   sheaf**, with the same three inputs; the derived completion functor on `D(A)` is produced
   rather than assumed, by [Stacks, Tag 0920].
 * `AlgebraicGeometry.RingedSite.exists_pages_derivedCompletion_globalSections_of_isGE`:
   **[Stacks, Tag 0BLX]'s second spectral sequence at an arbitrary finite-type ideal sheaf**, from
-  [Stacks, Tag 099F] and the cohomological boundedness below of `ℱ^∧`.
+  the cohomological boundedness below of `ℱ^∧`, the adjoint being supplied by instance search.
 * `Stacks.Algebraization.exists_shortExact_adicCompletion_cohomology_of_isDerivedLimit`:
   **[Stacks, Tag 0A0M]'s short exact sequence with `H^p(X, ℱ)^∧` in the middle**, under the
   source's own hypotheses and one named input, the levelwise comparison
@@ -157,8 +166,9 @@ second of that theorem's two assumed inputs replaced by something weaker and nam
 assumes a bounded below complex representing `ℱ^∧` with an isomorphism; this one assumes
 only that `ℱ^∧` is cohomologically `≥ b` for some `b`, and *produces* the complex, the
 isomorphism and the Cartan-Eilenberg resolution, by `DerivedCategory.exists_iso_Q_obj_of_isGE`
-and [Stacks, Tag 015I]. Boundedness below is the one aspect of [Stacks, Tag 099E] that this
-statement needs beyond the adjoint: the object `K ⟶ 𝒪` of that tag is locally a Čech complex of
+and [Stacks, Tag 015I]. Boundedness below is the one aspect of `exists_isGlobalExtendedCech`
+([Stacks, Tag 099E]) that this statement needs beyond the adjoint: the object `K ⟶ 𝒪` of that
+tag is locally a Čech complex of
 some length `r`, so `R𝓗om_𝒪(K, ℱ)` is cohomologically bounded below — which is precisely how
 `isGE_derivedCompletion_generatedIdealSheaf_obj` of `GlobalSectionsCompletionGenerated.lean`
 discharges it in the globally generated case.
@@ -297,20 +307,22 @@ sections of `ℐ` into `ℐ'`, and let `K ∈ D(𝒪')` be **arbitrary**. Then
 `Rf_*(K^∧) ≅ (Rf_*K)^∧`: `Rf_*` commutes with derived completion. This is the whole assertion of
 [Stacks, Tag 0A0G] and the display of [Stacks, Tag 0A0I], with no hypothesis on the object.
 
-Three inputs are carried, each of them a result the source has in hand before it writes the
-display down, and each visible in the signature.
+What the source has in hand before writing the display down is three results. The first — the
+adjoint of [Stacks, Tag 099F] — is now discharged inside this library by instance search; the
+other two are carried, visible in the signature.
 
-1. **[Stacks, Tag 099F]**, as the two instance binders
-   `(ObjectProperty.ι (IsDerivedComplete X I')).IsRightAdjoint` and the same for `Y` and `ℐ`.
-   This is what lets `(-)^∧` be written at all. It is proved in this library at a sheaf of ideals
-   generated by finitely many global sections
-   (`isRightAdjoint_ι_isDerivedComplete_generatedIdealSheaf`) and for nilpotent local sections
-   (`isRightAdjoint_ι_isDerivedComplete_of_forall_isNilpotent`); at an arbitrary finite-type
-   sheaf of ideals it rests on [Stacks, Tag 099E], which is being built separately. Rather than
-   duplicate that work this statement carries the conclusion explicitly, and therefore carries
-   **no** `@[stacks]` attribute: a tag counts only on a declaration proved under the source's own
-   hypotheses. When [Stacks, Tag 099E] lands, deleting the two binders turns this into a
-   registration of both tags with no change to the proof.
+1. **[Stacks, Tag 099F]** — discharged rather than carried. The requirements
+   `(ObjectProperty.ι (IsDerivedComplete X I')).IsRightAdjoint` and the same for `Y` and `ℐ`,
+   which are what let `(-)^∧` be written at all, resolve by instance search through the instance
+   `isRightAdjoint_ι_isDerivedComplete` of `FiniteTypeReflector.lean`, registered `@[stacks 099F]`
+   at an arbitrary finite-type ideal sheaf and proved from `exists_isGlobalExtendedCech`
+   ([Stacks, Tag 099E]) of `FiniteTypeExtendedCech.lean`; the earlier partial regimes
+   (`isRightAdjoint_ι_isDerivedComplete_generatedIdealSheaf`,
+   `isRightAdjoint_ι_isDerivedComplete_of_forall_isNilpotent`) stand where they are. The
+   statement still carries **no** `@[stacks]` attribute: a tag counts only on a declaration
+   proved under the source's own hypotheses, and 2 and 3 below are conclusions the source derives
+   inside its proof of 0A0G; discharging them is the remaining distance to a registration of
+   both tags with no change to the proof.
 2. **[Stacks, Tag 0A0E]**, as `hsource` and `htarget`: the two completions are derived limits of
    towers `T'` and `T`. The towers are arbitrary; at a generated ideal sheaf they are the Koszul
    towers of
@@ -374,12 +386,13 @@ The source proves this in a line, by [Stacks, Tag 0A0G] at the morphism of ringe
 `nonempty_iso_derivedPushforward_derivedCompletion_of_isDerivedLimit` is run again with
 `RΓ(𝒞, -) : D(𝒪) ⥤ D(A)` in place of `Rf_*`, and the three inputs are the same:
 
-1. **[Stacks, Tag 099F]** on `D(𝒪)`, as the instance binder
-   `(ObjectProperty.ι (IsDerivedComplete Z 𝓘)).IsRightAdjoint` — without which `ℱ^∧` cannot be
-   written. It is carried rather than discharged because at an arbitrary finite-type ideal sheaf
-   it rests on [Stacks, Tag 099E], which is being built separately; that is why this statement
-   carries no `@[stacks 0BLX]` attribute, and deleting the binder once Tag 099E lands turns it
-   into a registration. The tag's registered statements elsewhere are untouched: the identity in
+1. **[Stacks, Tag 099F]** on `D(𝒪)`, discharged by instance search rather than carried: the
+   requirement `(ObjectProperty.ι (IsDerivedComplete Z 𝓘)).IsRightAdjoint`, without which `ℱ^∧`
+   cannot be written, is supplied at an arbitrary finite-type ideal sheaf by
+   `isRightAdjoint_ι_isDerivedComplete` of `FiniteTypeReflector.lean` (`@[stacks 099F]`, proved
+   from `exists_isGlobalExtendedCech`, [Stacks, Tag 099E]); the statement still carries no
+   `@[stacks 0BLX]` attribute because 2 and 3 remain hypotheses. The tag's registered statements
+   elsewhere are untouched: the identity in
    the nilpotent regime (`exists_iso_derivedCompletion_derivedGlobalSections` of
    `UnboundedGlobalSections.lean`), the first spectral sequence at the source's own generality,
    and the second at a generated ideal sheaf.
@@ -461,13 +474,15 @@ into the complex and the isomorphism, which appear in the conclusion. The Cartan
 resolution is universally quantified, as in [Stacks, Tag 015J] itself; its existence is
 [Stacks, Tag 015I].
 
-Two things are carried, and both come from [Stacks, Tag 099E].
+One thing is carried, and it comes from the shape of the object of [Stacks, Tag 099E].
 
-* **[Stacks, Tag 099F]** as the instance binder
-  `(ObjectProperty.ι (IsDerivedComplete Z 𝓘)).IsRightAdjoint`, which is what makes `ℱ^∧` exist.
+* **[Stacks, Tag 099F]** — discharged: the requirement `(ObjectProperty.ι (IsDerivedComplete Z
+  𝓘)).IsRightAdjoint`, which makes `ℱ^∧` exist, resolves by instance search through
+  `isRightAdjoint_ι_isDerivedComplete` of `FiniteTypeReflector.lean`.
 * **`hGE`**, the cohomological boundedness below of `ℱ^∧`. This is not a conclusion of the tag
   and not implied by Tag 099F's bare statement; it comes from the *shape* of the object
-  `K ⟶ 𝒪` of [Stacks, Tag 099E], which is locally a Čech complex of some length `r`, so that
+  `K ⟶ 𝒪` of `exists_isGlobalExtendedCech`, which is locally a Čech complex of some length `r`,
+  so that
   `R𝓗om_𝒪(K, ℱ)` is bounded below. That is exactly how it is discharged in the globally
   generated case, by `isGE_derivedCompletion_generatedIdealSheaf_obj` of
   `GlobalSectionsCompletionGenerated.lean`, which bounds `ℱ^∧` below by `-r`.
@@ -583,8 +598,9 @@ Then `Rlim.Pro.nonempty_iso_of_isDerivedLimit_of_natIso` identifies the two side
 [Stacks, Tag 0EET] produces to an arbitrary one, which is the form `hBLX` is stated in.
 
 **No part of [Stacks, Tags 099E or 099F] is a hypothesis here**, which is worth recording
-because the other statements of this file do carry Tag 099F: the left hand side of `hBLX` is the
-*formal* completion `lim ℱ/𝓘ⁿℱ` and not a reflector applied to anything, and the reflector on
+because the other statements of this file once carried Tag 099F, which they no longer do; here
+the left hand side of `hBLX` is the *formal* completion `lim ℱ/𝓘ⁿℱ` and not a reflector applied
+to anything, and the reflector on
 `D(A)` comes from [Stacks, Tag 0920]. The single assumed input is `hproj`. It carries no tag all
 the same, because `hproj` is a result the source's proof invokes rather than one of its
 hypotheses.
