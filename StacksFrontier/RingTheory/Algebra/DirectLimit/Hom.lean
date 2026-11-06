@@ -130,7 +130,6 @@ private theorem subalgebra_eq_top_of_one_tmul_mem {C : Type*} [CommRing C] [Alge
     simpa using hx
   refine eq_top_iff.2 fun z _ ↦ ?_
   induction z with
-  | zero => exact zero_mem T
   | tmul x y => simpa [TensorProduct.smul_tmul'] using T.smul_mem (h1 y) x
   | add z₁ z₂ hz₁ hz₂ => exact add_mem (hz₁ Algebra.mem_top) (hz₂ Algebra.mem_top)
 
@@ -178,7 +177,6 @@ variable {A : Type*} [CommRing A] {S : Type*} [CommRing S] [Algebra A S]
 private theorem coe_rTensor (φ : S →ₐ[A] T) (z : S ⊗[A] B) :
     Algebra.TensorProduct.rTensor B φ z = LinearMap.rTensor B φ.toLinearMap z := by
   induction z with
-  | zero => simp
   | tmul x y => simp
   | add z₁ z₂ h₁ h₂ => simp [h₁, h₂]
 
@@ -187,7 +185,6 @@ private theorem rTensor_lTensor_apply (φ : S →ₐ[A] T) (u : B →ₐ[A] C) (
     Algebra.TensorProduct.rTensor C φ (Algebra.TensorProduct.lTensor (S := S) S u z) =
       Algebra.TensorProduct.lTensor (S := T) T u (Algebra.TensorProduct.rTensor B φ z) := by
   induction z with
-  | zero => simp
   | tmul x y => simp
   | add z₁ z₂ h₁ h₂ => simp [h₁, h₂]
 
@@ -258,7 +255,6 @@ private theorem exists_lRTensor_eq (z : R ⊗[A] M) :
       (g j).toLinearMap ∘ₗ (f i j h).toLinearMap = (g i).toLinearMap :=
     fun i j h ↦ LinearMap.ext fun x ↦ hg i j h x
   induction z with
-  | zero => exact ⟨Classical.arbitrary ι, 0, map_zero _⟩
   | tmul x m =>
       obtain ⟨i, y, rfl⟩ := exists_eq_apply hR x
       exact ⟨i, y ⊗ₜ m, by simp⟩
