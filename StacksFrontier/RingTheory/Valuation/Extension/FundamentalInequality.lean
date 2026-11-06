@@ -48,13 +48,6 @@ noncomputable def ValuationRing.valueGroupHom (B K L : Type*)
   Units.map (((valuation B L).toMonoidWithZeroHom.comp
     (algebraMap K L).toMonoidWithZeroHom).toMonoidHom)
 
-/-- A valuation ring `A` with fraction field `K` is the ring of integers of its canonical
-valuation. -/
-theorem ValuationRing.integers (A K : Type*) [CommRing A] [IsDomain A] [ValuationRing A]
-    [Field K] [Algebra A K] [IsFractionRing A K] : (valuation A K).Integers A where
-  hom_inj := IsFractionRing.injective A K
-  map_le_one a := (mem_integer_iff _ _ _).mpr ⟨a, rfl⟩
-  exists_of_le_one _ h := (mem_integer_iff _ _ _).mp h
 
 /-- Every nonzero element of the residue field of a local ring `B` is the residue of a unit
 of `B`. -/
