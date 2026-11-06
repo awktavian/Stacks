@@ -210,13 +210,12 @@ lemma shiftFunctorZero_eq :
   ext
   rw [shiftFunctorZero_hom_app_f, shiftFunctorZero'_hom_app_f]
 
--- `shortComplexFunctor'` is semireducible, so a `K.XIsoOfEq` supplied where a
--- `(shiftFunctor n ⋙ eval i).obj K ≅ _` is expected leaves a goal that is not type-correct at
--- `implicit` transparency, and every `rw`/`simp only` below stalls on it. Making it unfold is
--- what lets the rest of the section go through with no `set_option backward.*`. `eval` needs the
--- same and used to be set here too; Mathlib now marks it `@[implicit_reducible]` itself, and
--- re-setting a status a declaration already has is an error.
-attribute [local implicit_reducible] HomologicalComplex.shortComplexFunctor'
+-- `shortComplexFunctor'` needs to unfold so a `K.XIsoOfEq` supplied where a
+-- `(shiftFunctor n ⋙ eval i).obj K ≅ _` is expected is type-correct at `implicit` transparency,
+-- which is what lets the rest of the section go through with no `set_option backward.*`.
+-- Mathlib now marks both `eval` and `shortComplexFunctor'` `@[implicit_reducible]` itself
+-- (`Mathlib/Algebra/Homology/ShortComplex/HomologicalComplex.lean`), and re-setting a status a
+-- declaration already has is an error, so the local attribute is removed rather than retargeted.
 
 /-- Shifting chain complexes by `n` and evaluating in a degree `i` identifies
 to the evaluation in degree `i'` when `i + n = i'`.
