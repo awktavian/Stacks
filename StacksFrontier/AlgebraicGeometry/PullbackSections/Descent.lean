@@ -114,7 +114,6 @@ theorem liftBaseChange_lTensor
     cmp'.liftBaseChange B (LinearMap.lTensor B r x) =
       s (cmp.liftBaseChange B x) := by
   induction x with
-  | zero => simp
   | add x y hx hy => simp [hx, hy]
   | tmul b m => simp [h m]
 
@@ -130,7 +129,6 @@ theorem liftBaseChange_eq_of_tmul (cmp : M →ₗ[A] N) (g : B ⊗[A] M →+ N)
     (h : ∀ (b : B) (m : M), g (b ⊗ₜ[A] m) = b • cmp m) (x : B ⊗[A] M) :
     cmp.liftBaseChange B x = g x := by
   induction x with
-  | zero => simp
   | add u v hu hv => rw [map_add, map_add, hu, hv]
   | tmul b m => rw [LinearMap.liftBaseChange_tmul, h]
 
@@ -165,7 +163,6 @@ theorem piRightHom_lTensor_pi (r : ∀ i, M →ₗ[A] Mi i) (i : ι) (x : B ⊗[
     TensorProduct.piRightHom A B B Mi (LinearMap.lTensor B (LinearMap.pi r) x) i =
       LinearMap.lTensor B (r i) x := by
   induction x with
-  | zero => simp
   | add u v hu hv => simp [hu, hv]
   | tmul b m => simp
 
@@ -215,7 +212,6 @@ private theorem prodRight_lTensor_prod (r₁ : M →ₗ[A] M₁) (r₂ : M →�
     TensorProduct.prodRight A B B M₁ M₂ (LinearMap.lTensor B (LinearMap.prod r₁ r₂) x) =
       (LinearMap.lTensor B r₁ x, LinearMap.lTensor B r₂ x) := by
   induction x with
-  | zero => simp [Prod.ext_iff]
   | add u v hu hv => simp [hu, hv]
   | tmul b m => simp
 
@@ -226,7 +222,6 @@ private theorem lTensor_diff (s₁ : M₁ →ₗ[A] M₀) (s₂ : M₂ →ₗ[A]
       LinearMap.lTensor B s₁ (TensorProduct.prodRight A B B M₁ M₂ w).1 -
         LinearMap.lTensor B s₂ (TensorProduct.prodRight A B B M₁ M₂ w).2 := by
   induction w with
-  | zero => simp
   | add u v hu hv =>
       simp only [map_add, hu, hv, Prod.fst_add, Prod.snd_add]
       abel
@@ -370,7 +365,6 @@ theorem bijective_baseChangeMap_bot (c : Comparison A B L M N) :
   have h : ∀ z : B ⊗[A] M (⊥ : L), z = 0 := by
     intro z
     induction z with
-    | zero => rfl
     | add u v hu hv => rw [hu, hv, add_zero]
     | tmul b m => rw [c.subsingleton_M_bot m, TensorProduct.tmul_zero]
   exact ⟨fun x y _ => by rw [h x, h y], fun n => ⟨0, by rw [map_zero, c.subsingleton_N_bot n]⟩⟩
