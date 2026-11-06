@@ -88,7 +88,6 @@ noncomputable def rightModule : Module R' (M ⊗[R] R') where
       = LinearMap.lTensor M (LinearMap.mulLeft R a) x
         + LinearMap.lTensor M (LinearMap.mulLeft R b) x
     induction x with
-    | zero => simp
     | tmul m y => simp [LinearMap.mulLeft, add_mul, TensorProduct.tmul_add]
     | add u v hu hv => simp only [map_add, hu, hv]; abel
   zero_smul x := by
@@ -104,14 +103,12 @@ theorem rightModule_smul_tmul (r' : R') (m : M) (x : R') :
 local instance : IsScalarTower R R' (M ⊗[R] R') where
   smul_assoc a b x := by
     induction x with
-    | zero => simp
     | tmul m y => simp [TensorProduct.smul_tmul']
     | add u v hu hv => simp only [smul_add, hu, hv]
 
 local instance : SMulCommClass S R' (M ⊗[R] R') where
   smul_comm s r' x := by
     induction x with
-    | zero => simp
     | tmul m y => simp [TensorProduct.smul_tmul']
     | add u v hu hv => simp only [smul_add, hu, hv]
 
@@ -136,13 +133,10 @@ theorem literalModule_smul_tmul (s : S) (r : R') (x : M ⊗[R] R') :
 theorem Module.tensorBaseChangeEquiv_smul (c : S ⊗[R] R') (x : (S ⊗[R] R') ⊗[S] M) :
     Module.tensorBaseChangeEquiv (c • x) = c • Module.tensorBaseChangeEquiv x := by
   induction c with
-  | zero => simp
   | tmul s r =>
     induction x with
-    | zero => simp
     | tmul c' m =>
       induction c' with
-      | zero => simp
       | tmul s' r' =>
         simp [Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', mul_smul]
       | add u v hu hv => simp [TensorProduct.add_tmul, hu, hv]
