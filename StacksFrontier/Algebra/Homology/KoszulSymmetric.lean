@@ -135,7 +135,6 @@ lemma mapBifunctor₁₂_ι_comp_associator (K L M : CochainComplex C ℤ) (p q 
         (up ℤ) (up ℤ) (up ℤ) n).hom := rfl
   rw [hα, HomologicalComplex.ι_mapBifunctorAssociatorX_hom]
   simp only [CategoryTheory.MonoidalCategory.curriedAssociatorNatIso_hom_app_app_app]
-  rfl
 
 variable [SymmetricCategory C]
 
