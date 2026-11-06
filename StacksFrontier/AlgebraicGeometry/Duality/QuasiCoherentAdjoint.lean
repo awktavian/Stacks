@@ -45,14 +45,22 @@ source's inputs: [Stacks, Tag 08DZ], that `Rf_*` commutes with direct sums, and
 Those same two inputs, and no others, are what
 `Stacks.Duality.DerivedPushforward.isLeftAdjoint_qcqsRestrictedDerivedPushforward` carries for an
 arbitrary quasi-compact quasi-separated morphism with quasi-compact target, where the tag is
-registered. Of the two, 09IS is not formalized in this repository at all. 08DZ *is* formalized at the
+registered. Of the two, neither is open any more. 08DZ is formalized at the
 locally small model in force here, in the namespace `Stacks.Duality.DerivedPushforward`, as
 `LocallySmall.preservesColimitsOfShape_discrete_quasiCoherentDerivedPushforward`
 of
 `StacksFrontier/AlgebraicGeometry/Duality/DerivedPushforward/QuasiCoherentDirectSumsLocallySmall.lean`;
 it takes the quasi-coherence proof `hpush` as an argument and so covers the affine restricted
-functor below as well. That file imports this one, so the hypothesis is still a binder here, but
-it is no longer open. 09IS is the only substantial one left.
+functor below as well. 09IS is formalized in
+`StacksFrontier/AlgebraicGeometry/DerivedQCoh/PerfectGeneratorInduction.lean`, as
+`Stacks.DerivedQCoh.AnyModel.hasPerfectGenerator_of_qcqs` (`@[stacks 09IS]`) and, in the
+source's own words, `Stacks.DerivedQCoh.AnyModel.exists_isPerfect_isZero_iff_forall_hom_eq_zero`
+(`@[stacks 09IS]`). The two inputs are consumed and discharged together downstream, at the
+`@[stacks 0A9E]` `Stacks.Duality.DerivedPushforward.isLeftAdjoint_qcqsRestrictedDerivedPushforward_of_qcqs`
+(`Duality/CompactGeneration/QcqsCompactGeneration.lean`) and its affine-source case
+`isLeftAdjoint_qcqsRestrictedDerivedPushforward_of_isAffine`
+(`Duality/CompactGeneration/AffineQuasiCoherent.lean`). Those files lie downstream of this one
+in the import order, so the hypotheses are still binders here — but they are no longer open.
 
 ## Main results
 
@@ -241,10 +249,15 @@ is about is correspondingly the canonical
 proof. Of the inputs the source cites, what remains are exactly two: [Stacks, Tag 08DZ], that
 `Rf_*` commutes with direct sums, which is the `PreservesColimitsOfShape` instance together with
 the exactness instances; and [Stacks, Tag 09IS], compact generation, which is `E`, its
-compactness instance and `hE`. 09IS is not formalized in this repository; 08DZ is, at the locally
+compactness instance and `hE`. Both are formalized in this repository — 08DZ at the locally
 small model in force here, by
 `DerivedPushforward.LocallySmall.preservesColimitsOfShape_discrete_quasiCoherentDerivedPushforward`,
-which lives in a file importing this one and so has to be supplied by the caller. -/
+and 09IS as `Stacks.DerivedQCoh.AnyModel.hasPerfectGenerator_of_qcqs` (`@[stacks 09IS]`,
+`DerivedQCoh/PerfectGeneratorInduction.lean`) — and both are discharged together downstream, in
+`DerivedPushforward.isLeftAdjoint_qcqsRestrictedDerivedPushforward_of_qcqs` and its affine-source
+case `isLeftAdjoint_qcqsRestrictedDerivedPushforward_of_isAffine`
+(`Duality/CompactGeneration/AffineQuasiCoherent.lean`); those files lie downstream of this one in
+the import order, so the inputs still have to be supplied by the caller here. -/
 theorem isLeftAdjoint_affineQuasiCoherentDerivedPushforward
     (S : CommRingCat.{u}) (f : Spec S ⟶ Spec R)
     [(affineQuasiCoherentDerivedPushforward R S f).CommShift ℤ]
