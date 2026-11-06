@@ -89,12 +89,24 @@ two facts about the chart base change: the acting point of `X` is the new point'
 and `q` is unchanged. So the whole cocycle condition reduces to
 `AlgebraicGeometry.BigFppfOver.hom_ext_of_isPullback`.
 
-**Why effectivity is taken as a hypothesis.** Stacks 0APK is Chapter 40 and is not proved here.
-Nothing in this file proves effectivity of any descent datum; effectivity is a hypothesis of
-every statement that uses it, and what is proved is the equivalence of the two shapes in which
-that hypothesis can be met. This is the reason no declaration here carries a Stacks tag: each
-either carries the hypothesis or is a statement about shapes rather than about geometry. Stacks
-0APL belongs on the unconditional statement, once Stacks 0APK lands.
+**Why effectivity is taken as a hypothesis.** Stacks 0APK is proved in this repository, and this
+file is the shape adapter through which its proof reaches the consumers of the bespoke
+hypothesis `hAPK`. The tag is registered in
+`StacksFrontier.AlgebraicGeometry.Descent.IndQuasiAffineFpqcEffective` at
+`AlgebraicGeometry.DescentData.isFamilyEffective_of_forall_isIndQuasiAffineHom_of_anyIndex`
+(the family statement, over an arbitrary base) and at its affine-base special case
+`AlgebraicGeometry.DescentData.isFamilyEffective_of_forall_isIndQuasiAffineHom`, and in
+`StacksFrontier.AlgebraicGeometry.Descent.SeparatedQuasiFiniteSchemeDescent` as the one-member
+covering `AlgebraicGeometry.DescentDatum.isEffective_of_isIndQuasiAffineHom_of_quasiCompact` —
+and this last is exactly the shape of every `hAPK` in this file: effectivity of a `DescentDatum`,
+read as `AlgebraicGeometry.DescentData.IsEffective`. Nothing in this file proves effectivity of
+any descent datum; effectivity remains a hypothesis of every statement here that uses it, and
+what is proved is the equivalence of the two shapes in which that hypothesis can be met. This is
+the reason no declaration here carries a Stacks tag: each either carries the hypothesis or is a
+statement about shapes rather than about geometry. Stacks 0APL belongs on the unconditional
+statement, and it now stands on one: `AlgebraicGeometry.IsAlgebraicSpace.isSheaf_fpqc` of
+`StacksFrontier.AlgebraicGeometry.Descent.IndQuasiAffineFpqcSheaf`, whose proof reaches the
+sheaf condition through the affine-base interface of this file.
 
 **Why the affine-base shape is a third shape and not a special case.** The reduction of Stacks
 0APK in `StacksFrontier.AlgebraicGeometry.Descent.DescentDatumResidue` needs `[IsAffine S]` and
@@ -769,9 +781,24 @@ inhabited, by `AlgebraicGeometry.exists_isAffine_descentDatum_isIndQuasiAffineHo
 hypothesis is not vacuously true.
 
 **This is not Stacks 0APL and carries no tag.** Nothing here proves effectivity of any descent
-datum, and the last of the four obligations is Stacks 0AP4, which this repository does not
-prove; so this statement closes nothing. What it is for is to be the one interface through
-which a proof of those obligations reaches both Stacks 0APL and, through
+datum, but the hypothesis is no longer open in the repository: the one-member case of Stacks
+0APK, `AlgebraicGeometry.DescentDatum.isEffective_of_isIndQuasiAffineHom_of_quasiCompact` of
+`StacksFrontier.AlgebraicGeometry.Descent.SeparatedQuasiFiniteSchemeDescent`, asserts effectivity
+of every ind-quasi-affine descent datum along a surjective flat quasi-compact morphism — over an
+arbitrary base, not only an affine one — and the last of the four obligations, Stacks 0AP4, is
+proved here as `AlgebraicGeometry.DescentDatum.isEffective_of_forall_exists_restrictOpen` of
+`StacksFrontier.AlgebraicGeometry.Descent.Scheme.DescendedScheme`, where it carries the tag. So
+this interface waits on nothing: Stacks 0APL lands through it as
+`AlgebraicGeometry.IsAlgebraicSpace.isSheaf_fpqc` of
+`StacksFrontier.AlgebraicGeometry.Descent.IndQuasiAffineFpqcSheaf`, via
+`AlgebraicGeometry.IsAlgebraicSpace.isSheaf_fpqc_of_legs_of_restrictOpen` of
+`StacksFrontier.AlgebraicGeometry.Descent.AffineFpqcLocalFromDescentData`, which is this theorem
+fed with `AlgebraicGeometry.DescentDatum.isEffective_of_legs_of_restrictOpen`; the landing file
+discharges its three obligations `hlegs`, `hrestrict` and `hglueing` with
+`AlgebraicGeometry.DescentDatum.preimage_specMap_legs_subsetΓSpecImage`,
+`AlgebraicGeometry.DescentDatum.isEffective_restrictOpen_descentInvariants` and Stacks 0AP4
+above. What remains of this statement's purpose is what it always was: to be the one interface
+through which a proof of those obligations reaches both Stacks 0APL and, through
 `AlgebraicGeometry.Space.isAffineHom_isLocalAtTarget_fpqc_of_isEffective_affine_indQuasiAffine`,
 Stacks 041Z. -/
 theorem isSheaf_fpqc_of_isEffective_affine_indQuasiAffine (hF : IsAlgebraicSpace B S hS F)
