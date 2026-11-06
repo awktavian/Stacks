@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.AlgebraicGeometry.Sites.Fpqc
+public import Mathlib.CategoryTheory.Sites.EffectiveEpimorphic
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
 public import StacksCore.Tactic.StacksAttribute
 
