@@ -44,9 +44,14 @@ opens. Part (2) then follows from `rightAcyclic_evaluation_of_isFlasque`.
 
 Part (1) is stated with the Čech acyclicity of flasque abelian sheaves — Stacks Tag 09SZ —
 as an explicit hypothesis `hFlasqueCech`, rather than tagged as a formalization of the
-tag. That input is not yet available in this development, so the unconditional form of
-part (1) is not proved here; discharging `hFlasqueCech` with 09SZ turns this result into
-part (1) verbatim.
+tag. That input is available in this development as
+`Stacks.Cohomology.FlasqueCech.isZero_cechComplex_homology_of_isFlasque` (Stacks Tag 09SZ,
+`CechAcyclicity/FlasqueCechVanishing.lean`); discharging `hFlasqueCech` with it turns this
+result into part (1) verbatim, and that discharge is registered as
+`pushforward_injective_cechCohomology_isZero` (`@[stacks 01EX "part (1)"]`) in
+`CechAcyclicity/PushforwardOfAnInjectiveCechVanishing.lean`. This file keeps the
+conditional form above: the hypothesis it carries is now a derived input, not an
+assumption the development still owes.
 
 ## References
 
