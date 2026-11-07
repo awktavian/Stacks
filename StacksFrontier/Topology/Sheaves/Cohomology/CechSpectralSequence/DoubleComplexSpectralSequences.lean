@@ -19,9 +19,16 @@ each step of either filtration of its total complex into the corresponding step,
 spectral sequence of a filtered complex is functorial in the filtered complex by
 [Stacks, Tag 012O]. This file assembles that into honest functors.
 
-This is the piece the Čech-to-cohomology spectral sequence of [Stacks, Tag 01ES] needs and does
-not have. **Tag 01ES itself is not proved here**, and nothing in this file carries the tag; see
-the implementation notes for exactly what is still missing.
+This is one of the pieces feeding the Čech-to-cohomology spectral sequence of [Stacks, Tag
+01ES]. **Tag 01ES itself is not stated in this file**, and nothing here carries the tag: it is
+registered in `CechSpectralSequence/Assembled.lean` as
+`Stacks.Cohomology.CechSpectral.cechSpectralSequence`
+(`@[stacks 01ES, sga "4 V 3.2" "ringed space, open cover"]`). The route from this file to the
+tag runs through `DoubleComplexNaturality.lean` and `FirstQuadrantDoubleComplex.lean`, whose
+def-form `HomologicalComplex₂.e₂SpectralSequence₂Functor` refines `totalSpectralSequence₂Functor`
+and `totalE₂SpectralSequence₂Functor` of this file, and on into the sequence and second-page
+identifications of `SequenceAndSecondPage.lean` and the abutment of `AbutmentIsCohomology.lean`;
+see the implementation notes for the per-item mapping.
 
 ## Main definitions
 
@@ -69,17 +76,29 @@ the implementation notes for exactly what is still missing.
   automatic because the inclusions of the steps are monomorphisms.
 * The identifications of the pages in [Stacks, Tag 0130] and the convergence statement of
   [Stacks, Tag 0132] are `Nonempty`-valued, so they say nothing about naturality of the
-  comparisons. What [Stacks, Tag 01ES] additionally needs, and what is *not* here, is therefore:
+  comparisons. What [Stacks, Tag 01ES] therefore needs beyond this file — items (a)-(c),
+  not stated *here*, are each proved elsewhere in the module:
   (a) a `def`-form refinement of `HomologicalComplex₂.exists_iso_pages_totalFiltration₂`
-  producing a *natural* isomorphism `''E_2^{p,q} ≅ H^p_{II}(H^q_I(K^{•,•}))`; (b) likewise for
-  the abutment, a `def`-form refinement of
-  `HomologicalComplex₂.isBounded_and_converges_totalFiltration₂`; and (c) a comparison of a
-  `CohomologicalSpectralSequence` carried on `ℤ × ℤ` with an `E₂CohomologicalSpectralSequenceNat`
-  carried on `ℕ × ℕ`, which needs the first-quadrant vanishing of the pages and does not follow
-  from `restrictR₀` alone. The route from here to 01ES also needs the Čech double complex of an
-  injective resolution to be functorial in the sheaf, for which
+  producing a *natural* isomorphism `''E_2^{p,q} ≅ H^p_{II}(H^q_I(K^{•,•}))`, supplied as
+  `Stacks.Cohomology.CechSpectral.cechPageTwoIso` (`SequenceAndSecondPage.lean`); (b) likewise
+  for the abutment, a `def`-form refinement of
+  `HomologicalComplex₂.isBounded_and_converges_totalFiltration₂`, supplied as
+  `Stacks.Cohomology.CechSpectral.cechAbutment` (`AbutmentIsCohomology.lean`); and (c) a
+  comparison of a `CohomologicalSpectralSequence` carried on `ℤ × ℤ` with an
+  `E₂CohomologicalSpectralSequenceNat` carried on `ℕ × ℕ`, which needs the first-quadrant
+  vanishing of the pages and does not follow from `restrictR₀` alone; the comparison is
+  supplied objectwise by `CategoryTheory.SpectralSequence.natRestrictE₂Comp`
+  (`Algebra/Homology/SpectralSequence/NatRestrict.lean`), which is what
+  `SequenceAndSecondPage.lean` consumes, while the functor-level
+  `Stacks.Cohomology.CechSpectral.totalE₂SpectralSequenceNat₂Functor` of
+  `FirstQuadrantPieces.lean` — a version whose hypothesis demands first-quadrant vanishing
+  of *every* double complex over the ambient category — is not usable there, as
+  `FirstQuadrantDoubleComplex.lean` records. The route
+  from here to 01ES also needs the Čech double complex of an injective resolution to be
+  functorial in the sheaf, for which
   `CochainComplex.filteredSpectralSequenceMap_hom_eq_of_filteredHomotopic` is the available
-  input.
+  input. With these ingredients the tag is registered as
+  `Stacks.Cohomology.CechSpectral.cechSpectralSequence` in `Assembled.lean`.
 
 ## References
 

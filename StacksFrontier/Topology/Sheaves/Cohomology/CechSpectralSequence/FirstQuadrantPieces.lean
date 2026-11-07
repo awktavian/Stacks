@@ -18,8 +18,15 @@ from `restrictR₀` alone".
 This file supplies that comparison, by applying the general restriction
 `CategoryTheory.SpectralSequence.natRestrictComp` of
 `StacksFrontier/Algebra/Homology/SpectralSequence/NatRestrict.lean` to
-`totalE₂SpectralSequence₂Functor`. **Tag 01ES itself is not proved here and nothing in this file
-carries the tag**; see the implementation notes for what is still missing.
+`totalE₂SpectralSequence₂Functor`. Its hypothesis is carried at the level of the ambient
+category — first-quadrant vanishing of *every* double complex there — so, as
+`Algebra/Homology/SpectralSequence/FirstQuadrantDoubleComplex.lean` records, this is not the
+form the module's route to the tag consumes; the objectwise
+`CategoryTheory.SpectralSequence.natRestrictE₂Comp` is used there instead. **Tag 01ES itself
+is not stated in this file**, and nothing here carries the tag: the tag is registered in
+`CechSpectralSequence/Assembled.lean` as `Stacks.Cohomology.CechSpectral.cechSpectralSequence`
+(`@[stacks 01ES, sga "4 V 3.2" "ringed space, open cover"]`); the implementation notes name
+the ingredients the assembly consumes.
 
 ## Main definitions
 
@@ -43,8 +50,11 @@ would let it be read off is item (a) of those same notes. What
 this file adds is that the vanishing is the *only* missing input for the index conversion, and
 that it suffices to check it on the second page.
 
-The remaining ingredients of 01ES, neither of which is here, are the natural identification of the
-second page with `H^p_{II}(H^q_I(K^{•,•}))` and the functorial filtered abutment. The latter needs
+The remaining ingredients of 01ES, neither of which is supplied here, are the natural
+identification of the second page with `H^p_{II}(H^q_I(K^{•,•}))` and the functorial filtered
+abutment; both are registered in the module — the first as `cechPageTwoIso` and the second as
+`cechAbutment` along the chain `SequenceAndSecondPage.lean` / `AbutmentIsCohomology.lean`,
+which `Assembled.lean` bundles into `cechSpectralSequence` (`@[stacks 01ES]`). The latter needs
 the abutment shape of [Stacks, Tag 01F6],
 `Stacks.Cohomology.Leray.FunctorialFirstQuadrantAbutsTo`.
 
