@@ -43,9 +43,9 @@ variable {K : Type u} {A : Type v} [Field K] [CommRing A] [Algebra K A]
 theorem krullDimLE_zero [Algebra.IsIntegral K A] : Ring.KrullDimLE 0 A := by
   rw [Ring.krullDimLE_zero_iff]
   intro I hI
-  refine Ideal.IsIntegral.isMaximal_of_isMaximal_comap (R := K) I ?_
-  have hp : (I.comap (algebraMap K A)).IsPrime := Ideal.comap_isPrime _ _
-  obtain h | h := (I.comap (algebraMap K A)).eq_bot_or_top
+  refine Ideal.IsIntegral.isMaximal_of_isMaximal_under (R := K) I ?_
+  have hp : (I.under K).IsPrime := Ideal.comap_isPrime _ _
+  obtain h | h := (I.under K).eq_bot_or_top
   · rw [h]; exact Ideal.bot_isMaximal
   · exact absurd h hp.ne_top
 
