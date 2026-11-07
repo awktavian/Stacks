@@ -315,7 +315,7 @@ noncomputable def transposeApp
 lemma transposeApp_tmul (h : M ⟶ (PresheafOfModules.restrictScalars.{u} (toRingCat α)).obj N)
     (V : Cᵒᵖ) (m : M.obj V) :
     transposeApp α h V (tmul (α.app V).hom 1 m) = Hom.app h V m :=
-  homEquiv_symm_apply_tmul _ _ _
+  homEquiv_symm_apply_tmul (M := M.obj V) (N := N.obj V) (α.app V).hom (Hom.app h V) m
 
 end Transpose
 
