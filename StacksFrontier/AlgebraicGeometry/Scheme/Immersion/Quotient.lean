@@ -96,7 +96,6 @@ private theorem stalkIso_comp_localRingHom_eq_stalkMap {R : Type u} [CommRing R]
       ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))).stalkMap q).hom := by
   convert (CommRingCat.hom_ext_iff.mp
     (Scheme.localRingHom_comp_stalkIso (CommRingCat.ofHom (Ideal.Quotient.mk I)) q)) using 1
-  rfl
 
 /-- **Stacks Project, Tag 01IG.** The map on stalks induced by
 `Spec(R / I) → Spec R` at `p / I` is surjective. -/
