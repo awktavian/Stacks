@@ -103,14 +103,19 @@ public def isTerminalOfIsIsoHom {X : Scheme.{u}} (A : X.Etale) [IsIso A.hom] :
   intro B m
   apply MorphismProperty.Over.Hom.ext
   have hw : m.left ≫ A.hom = B.hom := MorphismProperty.Over.w m
-  -- `simp [← hw]` then `rfl`, NOT `simp [← hw, MorphismProperty.Over.homMk]`. Naming that
-  -- definition in the simp set minted `CategoryTheory.MorphismProperty.Over.homMk.eq_1` -- an
-  -- equation lemma in MATHLIB's namespace, declared by THIS module. Two modules each minting it
-  -- are mutually unimportable under the module system with no textual diff to point at, and a
-  -- counting axiom census passes it (16 constants, 0 disallowed); only the census NAME LIST sees
-  -- it.
-  simp [← hw]
-  rfl
+  -- NEVER name `MorphismProperty.Over.homMk` in a simp set: doing so minted
+  -- `CategoryTheory.MorphismProperty.Over.homMk.eq_1` -- an equation lemma in MATHLIB's namespace,
+  -- declared by THIS module. Two modules each minting it are mutually unimportable under the
+  -- module system with no textual diff to point at, and a counting axiom census passes it; only
+  -- the census NAME LIST sees it.
+  -- On the rc4 pin the open-ended `simp [← hw]` no longer terminates: it fails with
+  -- "maximum recursion depth has been reached" (build log stacks-pin-rc4-build-1106.log:4452).
+  -- The uniqueness step is the underlying-morphism equality `m.left = B.hom ≫ inv A.hom`, so the
+  -- proof now names no simp set at all: `change` reduces the homMk projection to that statement,
+  -- and a directed rewrite chain closes it -- substitute `hw`, reassociate, cancel the inverse,
+  -- compose with the identity.
+  change m.left = B.hom ≫ inv A.hom
+  rw [← hw, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
 
 /-- Base change along `i : Z ⟶ X` carries a final object of the small étale site of `X` to a
 final object of the small étale site of `Z`: the final object is `X` itself over `X`, and its
