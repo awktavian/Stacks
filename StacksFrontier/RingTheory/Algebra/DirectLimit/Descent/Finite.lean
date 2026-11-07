@@ -103,43 +103,36 @@ theorem IsDirectedColimit.tensor_right (S : Type*) [CommRing S] [Algebra R S]
   have hcompP : ∀ ⦃i j⦄ (hij : i ≤ j) (z : TensorProduct R (A i) S),
       tensorG S g j (tensorF S f hij z) = tensorG S g i z := by
     intro i j hij z
-    induction z with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
+    induction z using TensorProduct.inductionOn with
     | tmul a s => simp [tensorF, tensorG, Algebra.TensorProduct.map_tmul, hcolim.comp]
+    | add x y hx hy => simp only [map_add, hx, hy]
   have hmapR : ∀ {A' : Type _} [CommRing A'] [Algebra R A'] (h : A' →ₐ[R] L)
       (w : TensorProduct R A' S),
       (Algebra.TensorProduct.map h (AlgHom.id R S)) w = LinearMap.rTensor S h.toLinearMap w := by
     intro A' _ _ h w
-    induction w with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
+    induction w using TensorProduct.inductionOn with
     | tmul a s => simp [Algebra.TensorProduct.map_tmul]
+    | add x y hx hy => simp only [map_add, hx, hy]
   have hmapRf : ∀ {A' A'' : Type _} [CommRing A'] [Algebra R A'] [CommRing A''] [Algebra R A'']
       (h : A' →ₐ[R] A'') (w : TensorProduct R A' S),
       (Algebra.TensorProduct.map h (AlgHom.id R S)) w = LinearMap.rTensor S h.toLinearMap w := by
     intro A' A'' _ _ _ _ h w
-    induction w with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
+    induction w using TensorProduct.inductionOn with
     | tmul a s => simp [Algebra.TensorProduct.map_tmul]
+    | add x y hx hy => simp only [map_add, hx, hy]
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro i j k hij hjk x
-    induction x with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]
+    induction x using TensorProduct.inductionOn with
     | tmul a s => simp [tensorF, Algebra.TensorProduct.map_tmul, hcolim.map_comp]
-  · intro i x
-    induction x with
-    | zero => simp
     | add x y hx hy => simp only [map_add, hx, hy]
+  · intro i x
+    induction x using TensorProduct.inductionOn with
     | tmul a s => simp [tensorF, Algebra.TensorProduct.map_tmul, hcolim.map_id]
+    | add x y hx hy => simp only [map_add, hx, hy]
   · intro i j hij x
     exact hcompP hij x
   · intro y
-    induction y with
-    | zero =>
-        exact ⟨Classical.arbitrary ι, 0, map_zero _⟩
+    induction y using TensorProduct.inductionOn with
     | tmul l s =>
         obtain ⟨i, a, ha⟩ := hcolim.jointly_surjective l
         refine ⟨i, a ⊗ₜ[R] s, ?_⟩
@@ -546,17 +539,15 @@ theorem finite_baseChange_of_colimit_finite
   have hcompat_f : ∀ ⦃i j⦄ (hij : i ≤ j) (x : TensorProduct R (A i) B),
       baseChange (A j) φ (tensorF B f hij x) = tensorF C f hij (baseChange (A i) φ x) := by
     intro i j hij x
-    induction x with
-    | zero => simp
-    | add x y hx hy => simp [map_add, hx, hy]
+    induction x using TensorProduct.inductionOn with
     | tmul a b => simp [baseChange, tensorF, Algebra.TensorProduct.map_tmul]
+    | add x y hx hy => simp [map_add, hx, hy]
   have hcompat_g : ∀ i (x : TensorProduct R (A i) B),
       baseChange L φ (tensorG B g i x) = tensorG C g i (baseChange (A i) φ x) := by
     intro i x
-    induction x with
-    | zero => simp
-    | add x y hx hy => simp [map_add, hx, hy]
+    induction x using TensorProduct.inductionOn with
     | tmul a b => simp [baseChange, tensorG, Algebra.TensorProduct.map_tmul]
+    | add x y hx hy => simp [map_add, hx, hy]
   have htype : ∀ i, (baseChange (A i) φ).FiniteType :=
     fun i => baseChange_finiteType (A i) φ hfin_type
   classical
