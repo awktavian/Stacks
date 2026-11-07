@@ -120,7 +120,7 @@ noncomputable def interLift {m : ℕ} {x : Fin m → ι} {T : C} (f : ∀ a, T �
 @[reassoc (attr := simp)]
 theorem interLift_comp_interπ {m : ℕ} {x : Fin m → ι} {T : C} (f : ∀ a, T ⟶ U (x a)) (a) :
     interLift U f ≫ interπ U x a = f a :=
-  Pi.lift_π _ _
+  Pi.lift_comp_π _ _
 
 /-- The reindexing morphism `inter U x ⟶ inter U (x ∘ h)` induced by a map of index sets
 `h : Fin m' → Fin m`. For open subsets of a topological space this is the inclusion of an
@@ -200,7 +200,7 @@ noncomputable def lift {n : ℕ} {T : A}
 @[reassoc (attr := simp)]
 theorem lift_comp_π {n : ℕ} {T : A} (f : ∀ x : Fin (n + 1) → ι, T ⟶ P.obj (op (inter U x)))
     (x : Fin (n + 1) → ι) : lift U P f ≫ π U P n x = f x :=
-  Pi.lift_π _ _
+  Pi.lift_comp_π _ _
 
 /-- The `i`-th restriction map from degree `n` to degree `n + 1` of the Čech complex: its
 component at the tuple `y : Fin (n + 2) → ι` is the restriction of a section over
@@ -225,7 +225,7 @@ theorem δ_comp_π (n : ℕ) (i : Fin (n + 2)) (y : Fin (n + 2) → ι) :
         (FormalCoproduct.mk _ U).cech).obj P).δ i ≫ π U P (n + 1) y =
       π U P n (y ∘ i.succAbove) ≫ P.map (interMap U y i.succAbove).op := by
   simp only [CosimplicialObject.δ, FormalCoproduct.cosimplicialObjectFunctor_obj_map]
-  exact Pi.lift_π _ _
+  exact Pi.lift_comp_π _ _
 
 /-- The coface maps of the cosimplicial object underlying the Čech complex are the
 restriction maps `face`. -/
