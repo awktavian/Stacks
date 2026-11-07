@@ -94,7 +94,8 @@ def whiskerFunctor (F : C ⥤ D) (z : CatCenter C) : F ⟶ F where
 /-- The central element of `D` obtained from a central element of `C` by conjugating with an
 equivalence `E : C ≌ D`. -/
 def transport (E : C ≌ D) (z : CatCenter C) : CatCenter D :=
-  E.counitIso.inv ≫ Functor.whiskerLeft E.inverse (whiskerFunctor E.functor z) ≫ E.counitIso.hom
+  End.of (E.counitIso.inv ≫ Functor.whiskerLeft E.inverse (whiskerFunctor E.functor z) ≫
+    E.counitIso.hom)
 
 variable (E : C ≌ D)
 
@@ -152,7 +153,7 @@ lemma transport_one : transport E 1 = 1 :=
 /-- Transport along an equivalence is multiplicative. -/
 lemma transport_mul (x y : CatCenter C) :
     transport E (x * y) = transport E x * transport E y :=
-  CatCenter.ext _ _ fun _ => by simp [transport_app]
+  CatCenter.ext _ _ fun _ => by simp [transport_app, CatCenter.mul_app]
 
 section Preadditive
 
