@@ -322,6 +322,17 @@ def cmpRChainHom (A : DoubleCx R) :
       rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
       exact LinearMap.mem_range_self _ _
     simp only [hd0, zero_add]
+    have hcollapse :
+        transp A (↑(Fin.castSucc (0 : Fin (n + 1)))) (0 : ℕ)
+            (n + 1 - ↑(Fin.castSucc (0 : Fin (n + 1)))) (n + 1) (Eq.refl _) (Eq.refl _) =
+          LinearEquiv.refl R (A.A 0 (n + 1)) := by
+      apply LinearEquiv.ext
+      intro x
+      rfl
+    have hidx : Fin.castSucc (0 : Fin (n + 1)) = 0 := Fin.ext rfl
+    have hb0 : b (Fin.castSucc (0 : Fin (n + 1))) = b 0 := Eq.refl _
+    simp only [one_smul, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.proj_apply,
+      LinearEquiv.coe_coe, hcollapse, hb0]
     rfl
 
 /-- The forward edge comparison `cmpRfwd : H_i(Tot A) →ₗ[R] H_i(R(A)_•)`, sending the class of
