@@ -176,7 +176,7 @@ theorem bijective_of_flat_descent
     intro b n i; simp [hEdef, he₁]
   have hsq : ∀ w : Bm ⊗[R] (∀ i, Mi i), Φ (e₁ w) = e₂ (φ.lTensor Bm w) := by
     intro w
-    induction w with
+    induction w using TensorProduct.induction_on with
     | zero => simp
     | tmul b m =>
         funext p
@@ -200,21 +200,21 @@ theorem bijective_of_flat_descent
       simpa [hEdef, hfex.apply_apply_eq_zero] using hsq (ε.lTensor Bm x)
   have hθ' : ∀ (z : Bm ⊗[R] N) (i : I), εU (θ z) i = ψ i (E z i) := by
     intro z
-    induction z with
+    induction z using TensorProduct.induction_on with
     | zero => intro i; simp
     | tmul b n => intro i; rw [hE b n i]; exact hθ b n i
     | add x y hx hy => intro i; simp [hx i, hy i]
   have hψe : ∀ (p : I × I) (w : Bm ⊗[R] Mi p.1),
       ψ' p ((δ p).lTensor Bm w) = ρ p (ψ p.1 w) := by
     intro p w
-    induction w with
+    induction w using TensorProduct.induction_on with
     | zero => simp
     | tmul b x => simpa using hψ p b x
     | add x y hx hy => simp [hx, hy]
   have hψe' : ∀ (p : I × I) (w : Bm ⊗[R] Mi p.2),
       ψ' p ((δ' p).lTensor Bm w) = ρ' p (ψ p.2 w) := by
     intro p w
-    induction w with
+    induction w using TensorProduct.induction_on with
     | zero => simp
     | tmul b y => simpa using hψ' p b y
     | add x y hx hy => simp [hx, hy]
