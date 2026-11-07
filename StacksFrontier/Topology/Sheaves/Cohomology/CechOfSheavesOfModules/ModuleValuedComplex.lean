@@ -53,11 +53,18 @@ object part with `cechComplex`. The functorial form is what an effaceability arg
 derived sections consumes: it needs the complex as a functor on sheaves of modules, not
 merely objectwise.
 
-Neither half of Stacks Tag 01EP is proved here, so no declaration in this file carries the
+Neither half of Stacks Tag 01EP is proved in this file, so no declaration here carries the
 tag. The positive-degree vanishing for an injective sheaf of modules reduces to the Čech
-acyclicity of flasque abelian sheaves (Stacks Tag 09SZ), which this development does not
-yet have; `underlying_isFlasque` supplies the flasqueness input that reduction needs. The
-degree-zero identification of Čech cohomology with sections is not proved here either.
+acyclicity of flasque abelian sheaves, Stacks Tag 09SZ — now available in this development
+as `Stacks.Cohomology.FlasqueCech.isZero_cechComplex_homology_of_isFlasque`
+(`CechAcyclicity/FlasqueCechVanishing.lean`); `underlying_isFlasque` supplies the
+flasqueness input that reduction needs. Both halves of the tag are registered elsewhere:
+the positive-degree half as
+`Stacks.Cohomology.CechSheaf.isZero_cechComplex_homology_of_injective`
+(`InjectiveVanishing.lean`, `@[stacks 01EP "positive degrees"]`), and the degree-zero
+identification of Čech cohomology with sections as
+`Stacks.Cohomology.CechSheaf.existsUnique_cechRestrictionHomologyMap`
+(`DegreeZeroUniqueIsomorphism.lean`, `@[stacks 01EP "degree zero"]`).
 
 ### Degree zero
 
@@ -78,12 +85,14 @@ anticipated rather than the option. The augmentation is stated on the side the c
 is then elementwise through the `mcomp`/`mmk`/`md` layer, so `X n` is never matched against
 `_ ^⦋n⦌` at all.
 
-What remains is not the kernel argument but a change of scalars. The tag's degree-zero clause
-is stated about `SheafOfModules.evaluation R (op V)`, whereas the augmentation above lives on
-`sectionsPresheaf V I` at the terminal object of the slice. Those carry the same underlying
-group, with `R(V)`-actions differing by restriction of scalars along a map that is provably
-but not syntactically the identity; `ModuleCat.restrictScalarsId'App` is the intended
-comparison.
+What this paragraph describes is not the kernel argument but a change of scalars. The tag's
+degree-zero clause is stated about `SheafOfModules.evaluation R (op V)`, whereas the
+augmentation above lives on `sectionsPresheaf V I` at the terminal object of the slice.
+Those carry the same underlying group, with `R(V)`-actions differing by restriction of
+scalars along a map that is provably but not syntactically the identity;
+`ModuleCat.restrictScalarsId'App` is the intended comparison. That comparison is carried
+out in `DegreeZeroUniqueIsomorphism.lean`, which composes `CechSheaf.homologyZeroIso` with
+`CechSheaf.sectionsTerminalFunctorIso` and registers the degree-zero clause of the tag.
 
 ## References
 
