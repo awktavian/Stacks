@@ -249,7 +249,7 @@ theorem freeTensorMap_freeMk_tmul {X Y : Cᵒᵖ} (f : X ⟶ Y) (e : E.obj X)
         (ModuleCat.freeMk (R := (R.obj X : Type u)) e ⊗ₜ[(R.obj X : Type u)] m) =
       ModuleCat.freeMk (R := (R.obj Y : Type u)) (ConcreteCategory.hom (E.map f) e)
         ⊗ₜ[(R.obj Y : Type u)] ModuleCat.Hom.hom (N.map f) m :=
-  (PresheafOfModules.Monoidal.tensorObj_map_tmul f _ m).trans
+  (PresheafOfModulesOfCommRing.Monoidal.tensorObj_map_tmul f _ m).trans
     (congrArg (fun z => z ⊗ₜ[(R.obj Y : Type u)] ModuleCat.Hom.hom (N.map f) m)
       (ModuleCat.freeDesc_apply _ e))
 
