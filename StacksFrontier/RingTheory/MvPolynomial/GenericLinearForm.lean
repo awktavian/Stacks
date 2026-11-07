@@ -64,7 +64,7 @@ noncomputable def linearForm (a : Fin n → R) : MvPolynomial (Fin n) R :=
 
 /-- The coefficient of `m` in `linearForm a * g` is `∑ i, a i * coeff m (X i * g)`. -/
 theorem coeff_linearForm_mul (a : Fin n → R) (g : MvPolynomial (Fin n) R) (m : Fin n →₀ ℕ) :
-    coeff m (linearForm a * g) = ∑ i, a i * coeff m (X i * g) := by
+    (linearForm a * g).coeff m = ∑ i, a i * (X i * g).coeff m := by
   rw [linearForm, Finset.sum_mul, coeff_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [mul_assoc, coeff_C_mul]
 
@@ -82,15 +82,15 @@ the lex-leading coefficient of `g`. -/
 theorem mul_leadingCoeff_eq_zero (a : Fin n → R) (g : MvPolynomial (Fin n) R)
     (hfg : linearForm a * g = 0) (k : Fin n) (hsmall : ∀ i, i < k → C (a i) * g = 0) :
     a k * MonomialOrder.lex.leadingCoeff g = 0 := by
-  show a k * coeff (MonomialOrder.lex.degree g) g = 0
-  have hzero : coeff (MonomialOrder.lex.degree g + Finsupp.single k 1) (linearForm a * g) = 0 := by
+  show a k * g.coeff (MonomialOrder.lex.degree g) = 0
+  have hzero : (linearForm a * g).coeff (MonomialOrder.lex.degree g + Finsupp.single k 1) = 0 := by
     simp [hfg]
   rw [coeff_linearForm_mul, Finset.sum_eq_single k] at hzero
   · rwa [add_comm (MonomialOrder.lex.degree g), coeff_X_mul] at hzero
   · intro i _ hik
     rcases hik.lt_or_gt with hlt | hgt
     · rw [← coeff_C_mul, show C (a i) * (X i * g) = X i * (C (a i) * g) by ring,
-        hsmall i hlt, mul_zero, coeff_zero]
+        hsmall i hlt, mul_zero, coeff_zero, Finsupp.zero_apply]
     · rw [coeff_X_mul', MonomialOrder.coeff_eq_zero_of_lt
         (MonomialOrder.lex_lt_iff.mpr (toLex_lt_add_single_sub_single hgt))]
       simp
@@ -121,8 +121,8 @@ theorem mccoy_core (a : Fin n → R) (g : MvPolynomial (Fin n) R) (hfg : linearF
     intro g hcard hfg hg
     by_cases hall : ∀ i, C (a i) * g = 0
     · obtain ⟨μ, hμ⟩ := MvPolynomial.support_nonempty.mpr hg
-      refine ⟨coeff μ g, mem_support_iff.mp hμ, fun i => ?_⟩
-      rw [mul_comm, ← coeff_C_mul, hall i, coeff_zero]
+      refine ⟨g.coeff μ, mem_support_iff.mp hμ, fun i => ?_⟩
+      rw [mul_comm, ← coeff_C_mul, hall i, coeff_zero, Finsupp.zero_apply]
     · push Not at hall
       obtain ⟨i0, hi0⟩ := hall
       obtain ⟨k, hkne, hmin⟩ :=
