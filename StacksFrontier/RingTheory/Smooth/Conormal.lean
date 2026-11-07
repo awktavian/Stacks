@@ -551,12 +551,12 @@ private theorem quotientComparison_two_injective
       simp [Ideal.quotientMapₐ, Ideal.quotientMap_mk]] at hx
   rw [Ideal.Quotient.eq_zero_iff_mem] at hx
   set a : Fin (Module.finrank R (RingHom.ker σ).Cotangent) → R :=
-    fun i => MvPolynomial.coeff (Finsupp.single i 1) p with ha
+    fun i => p.coeff (Finsupp.single i 1) with ha
   have hcc := constantCoeff_eq_zero_of_aeval_mem_ker σ _ htI ((Ideal.pow_le_self (by norm_num)) hx)
   set lin : MvPolynomial (Fin (Module.finrank R (RingHom.ker σ).Cotangent)) R :=
     Finset.univ.sum fun i => a i • MvPolynomial.X i with hlin
   have hcoeff_lin : ∀ (y : Fin (Module.finrank R (RingHom.ker σ).Cotangent) →₀ ℕ),
-      MvPolynomial.coeff y lin
+      lin.coeff y
       = Finset.univ.sum fun i => a i * (if Finsupp.single i 1 = y then 1 else 0) := by
     intro y
     rw [hlin, MvPolynomial.coeff_sum]
@@ -590,7 +590,7 @@ private theorem quotientComparison_two_injective
           simp [this]
         · simp
       rw [hsumj]
-      show MvPolynomial.coeff (Finsupp.single j 1) p - a j = 0
+      show p.coeff (Finsupp.single j 1) - a j = 0
       rw [ha]; simp
   have haeval_q : (MvPolynomial.aeval (fun i => t i)) (p - lin) ∈ (RingHom.ker σ)^(1+1) := by
     have := comparisonMap_pow_le σ _ t htI (1+1) hqmem
