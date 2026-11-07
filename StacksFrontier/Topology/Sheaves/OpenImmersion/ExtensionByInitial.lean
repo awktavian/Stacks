@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.CategoryTheory.Adjunction.Triple
+public import Mathlib.Topology.Sheaves.Functors
 public import Mathlib.Topology.Sheaves.Sheafify
 public import StacksCore.Tactic.StacksAttribute
 
