@@ -94,8 +94,8 @@ theorem exists_distTriang_milnor_of_isIso (T : ℕᵒᵖ ⥤ D)
       Pi.π (fun n : ℕ ↦ T.obj ⟨n⟩) (n + 1) ≫ T.map (homOfLE (Nat.le_succ n)).op with hd_def
   have hw : (Pi.lift c) ≫ d = 0 := by
     refine Pi.hom_ext _ _ fun n ↦ ?_
-    rw [Category.assoc, hd_def, Pi.lift_π, Preadditive.comp_sub, Pi.lift_π, ← Category.assoc,
-      Pi.lift_π, hc n, sub_self, zero_comp]
+    rw [Category.assoc, hd_def, Pi.lift_comp_π, Preadditive.comp_sub, Pi.lift_comp_π, ← Category.assoc,
+      Pi.lift_comp_π, hc n, sub_self, zero_comp]
   obtain ⟨f, hf⟩ := (Triangle.mk p d δ).coyoneda_exact₂ hδ (Pi.lift c) hw
   have hf' : Pi.lift c = f ≫ p := hf
   have hiso : IsIso f := by
