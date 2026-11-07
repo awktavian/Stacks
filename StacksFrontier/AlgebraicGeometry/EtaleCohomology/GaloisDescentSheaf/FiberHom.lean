@@ -88,7 +88,7 @@ theorem fiberHom_apply_eq_of_map_eq {X : C} {R : Sieve X} {M : Type w'}
   let α₁ : Φ.fiber.elementsMk Y₁ y₁ ⟶ Φ.fiber.elementsMk X (Φ.fiber.map f₁ y₁) := ⟨f₁, rfl⟩
   let α₂ : Φ.fiber.elementsMk Y₂ y₂ ⟶ Φ.fiber.elementsMk X (Φ.fiber.map f₁ y₁) := ⟨f₂, hy.symm⟩
   obtain ⟨Z, q₁, q₂, fac⟩ := IsCofiltered.cospan α₁ α₂
-  have h' := congrFun (hx q₁.1 q₂.1 h₁ h₂ (congrArg Subtype.val fac)) Z.2
+  have h' := congrFun (hx q₁.1 q₂.1 h₁ h₂ (congrArg Functor.Elements.Hom.hom fac)) Z.2
   simp only [fiberHomPresheaf_map_apply, unop_op, Quiver.Hom.unop_op] at h'
   rwa [CategoryOfElements.map_snd q₁, CategoryOfElements.map_snd q₂] at h'
 
