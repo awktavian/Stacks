@@ -43,7 +43,7 @@ theorem isLocallyInjective_uliftFunctor {P Q : Cᵒᵖ ⥤ AddCommGrpCat.{w}} (f
         Presheaf.equalizerSieve x.down y.down := by
       ext V i
       simp only [Presheaf.equalizerSieve_apply]
-      exact ⟨fun h ↦ congrArg ULift.down h, fun h ↦ ULift.ext _ _ h⟩
+      exact ⟨fun h ↦ congrArg ULift.down h, fun h ↦ ULift.ext h⟩
     rw [he]
     exact Presheaf.equalizerSieve_mem J f x.down y.down (congrArg ULift.down h)
 
@@ -58,7 +58,7 @@ theorem isLocallySurjective_uliftFunctor {P Q : Cᵒᵖ ⥤ AddCommGrpCat.{w}} (
       ext V i
       simp only [Presheaf.imageSieve_apply]
       exact ⟨fun ⟨x, hx⟩ ↦ ⟨x.down, congrArg ULift.down hx⟩,
-        fun ⟨x, hx⟩ ↦ ⟨ULift.up x, ULift.ext _ _ hx⟩⟩
+        fun ⟨x, hx⟩ ↦ ⟨ULift.up x, ULift.ext hx⟩⟩
     rw [he]
     exact Presheaf.imageSieve_mem J f (U := op X) s.down
 
