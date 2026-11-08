@@ -37,8 +37,10 @@ to the image of such a complex.
   object represented by a complex of quasi-coherent modules is represented by a bounded below
   one.
 * `surjective_comparisonAddHom_of_exists_quasicoherentModel`, in the same namespace:
-  surjectivity of `K₀(Vect(X)) ⟶ K₀(X)` with the hypothesis cut down from [Stacks, Tag 0F8F] to
-  the one input of Tag 0F8F that this repository does not carry.
+  surjectivity of `K₀(Vect(X)) ⟶ K₀(X)` with the hypothesis cut down from the `[stacks 0F8F]`
+  theorem `exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` of
+  `Perfect/BoundedLocallyFreeComplexes/PerfectRepresentative` to the [Stacks, Tag 08DB] input
+  that theorem consumes.
 * `Stacks.Perfect.BoundedLocallyFreeComplexes.surjective_comparisonAddHom_of_isNoetherian`:
   **the surjectivity half of [Stacks, Tag 0FDJ]** — surjectivity of `K₀(Vect(X)) ⟶ K₀(X)` on a
   Noetherian, quasi-separated scheme with the resolution property, with no hypothesis beyond
@@ -54,8 +56,14 @@ its top term in degree `b` — which is `(-1)^b` times the class of that term in
 the class of the truncation, to which the inductive hypothesis applies.
 
 Surjectivity takes as a hypothesis that every perfect object of `D(𝒪_X)` is isomorphic to the
-image of a bounded complex of finite locally free modules.  That is the statement of
-[Stacks, Tag 0F8F].  Injectivity is not proved here: it needs the inverse homomorphism
+image of a bounded complex of finite locally free modules.  That is the statement of the
+`[stacks 0F8F]` theorem `exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` of
+`Perfect/BoundedLocallyFreeComplexes/PerfectRepresentative`.  Under the quasi-compact,
+quasi-separated and resolution-property instances that theorem discharges the hypothesis, and
+`surjective_comparisonAddHom_of_isNoetherian` is surjectivity read that way; the hypothesis stays
+a binder of `surjective_comparisonAddHom` because `VectorBundleComparisonBijective` supplies a
+representability that need not come from those instances.  Injectivity is not proved here: it
+needs the inverse homomorphism
 `K₀(X) ⟶ K₀(Vect(X))` of the source, which is
 `StacksFrontier.AlgebraicGeometry.Perfect.VectorBundleComparisonBijective`.
 
@@ -67,11 +75,13 @@ given by `exists_isZero_homology_of_lt_of_isPerfect`, and
 Tag 0F8E.  The result is `surjective_comparisonAddHom_of_exists_quasicoherentModel`.
 
 On a Noetherian scheme with the resolution property no hypothesis is left:
-`AlgebraicGeometry.isAffineHom_diagonal_of_hasResolutionProperty_of_isNoetherian` — the
-Noetherian case of [Stacks, Tag 0F8C] — turns the resolution property into an affine diagonal,
-and `exists_boundedFiniteLocallyFree_iso_of_affineDiagonal`, in the same namespace, is Tag 0F8F
-there.  That is `surjective_comparisonAddHom_of_isNoetherian`, the surjectivity half of
-[Stacks, Tag 0FDJ] on a Noetherian scheme.  The whole tag, at the source's hypotheses and with
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty`, the `[stacks 0F8F]` theorem
+imported from `Perfect/BoundedLocallyFreeComplexes/PerfectRepresentative`, writes every perfect
+object of `D(𝒪_X)` as the image of a bounded complex of finite locally free modules — it deduces
+the affine diagonal from the resolution property by [Stacks, Tag 0F8C],
+`AlgebraicGeometry.HasResolutionProperty.isAffineHom_diagonal`.  That is
+`surjective_comparisonAddHom_of_isNoetherian`, the surjectivity half of [Stacks, Tag 0FDJ] on a
+Noetherian scheme.  The whole tag, at the source's hypotheses and with
 both halves of the conclusion, is
 `Stacks.Perfect.BoundedLocallyFreeComplexes.bijective_comparisonAddHom_of_hasResolutionProperty`
 of `StacksFrontier.AlgebraicGeometry.Perfect.VectorBundleComparisonBijectiveUnconditional`.
@@ -378,17 +388,21 @@ namespace Stacks.Perfect.BoundedLocallyFreeComplexes
 attribute [local instance 10000] HasDerivedCategory.standard
 attribute [local instance 20000] hasDerivedCategoryStandardRingedSiteModules
 
-/-- **The comparison homomorphism is surjective once [Stacks, Tag 0F8F] holds.** The canonical
-homomorphism `K₀(Vect(X)) ⟶ K₀(X) = K₀(D_perf(𝒪_X))`, which sends the class of a finite locally
-free `𝒪_X`-module to the class of that module placed in degree zero, is surjective once every
-perfect object of `D(𝒪_X)` is isomorphic to the image of a bounded complex of finite locally
-free modules.
+/-- **The comparison homomorphism is surjective once the conclusion of the `[stacks 0F8F]`
+theorem holds.** The canonical homomorphism `K₀(Vect(X)) ⟶ K₀(X) = K₀(D_perf(𝒪_X))`, which
+sends the class of a finite locally free `𝒪_X`-module to the class of that module placed in
+degree zero, is surjective once every perfect object of `D(𝒪_X)` is isomorphic to the image of a
+bounded complex of finite locally free modules — the conclusion of
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` of
+`Perfect/BoundedLocallyFreeComplexes/PerfectRepresentative`, carried here as the binder `hrep`
+because `StacksFrontier.AlgebraicGeometry.Perfect.VectorBundleComparisonBijective` applies it at
+representability that need not come from that theorem's instances.
 
 The classes of perfect objects generate `K₀(D_perf(𝒪_X))`, and the class of such a complex is
 the image of the alternating sum of the classes of its terms.
 
-The surjectivity clause of [Stacks, Tag 0FDJ] is this with the hypothesis discharged; it is
-`surjective_comparisonAddHom_of_isNoetherian`. -/
+The surjectivity clause of [Stacks, Tag 0FDJ] is this with the hypothesis discharged, by the
+registered theorem, in `surjective_comparisonAddHom_of_isNoetherian`. -/
 theorem surjective_comparisonAddHom (X : Scheme.{u})
     (hrep : ∀ K : DerivedCategory X.Modules, IsPerfect (X := X.toRingedSpace) K →
       ∃ E : CochainComplex X.Modules ℤ, boundedFiniteLocallyFreeComplex X E ∧
@@ -405,9 +419,11 @@ theorem surjective_comparisonAddHom (X : Scheme.{u})
 property that admits a bounded below representative with quasi-coherent terms is the image of a
 bounded complex of finite locally free modules.
 
-This is the step of [Stacks, Tag 0F8F] that follows the representability of a perfect object by a
-bounded below complex of quasi-coherent modules: that representability is the hypothesis
-`hmodel`, and the conclusion is drawn from it by
+This is the step of the `[stacks 0F8F]` theorem
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` that follows the representability
+of a perfect object by a bounded below complex of quasi-coherent modules: that representability
+is the hypothesis `hmodel` here, while the registered theorem obtains it from
+`exists_plus_quasicoherent_representative`, and the conclusion is drawn from it by
 `Stacks.Perfect.BoundedLocallyFreeComplexes.exists_boundedFiniteLocallyFree_quasiIso`, which is
 Tag 0F8E. -/
 theorem exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent (X : Scheme.{u})
@@ -427,8 +443,10 @@ theorem exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent (X : Sch
 resolution property, for a scheme on which every perfect object of `D(𝒪_X)` has a bounded below
 representative with quasi-coherent terms.
 
-The hypothesis is the input [Stacks, Tag 0F8F] takes from [Stacks, Tag 08DB]; the rest of Tag
-0F8F is `exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent`. -/
+The hypothesis is the [Stacks, Tag 08DB] input that the `[stacks 0F8F]` theorem
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` consumes through
+`exists_plus_quasicoherent_representative`; the rest of that theorem is
+`exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent`. -/
 theorem surjective_comparisonAddHom_of_exists_plusQuasicoherent (X : Scheme.{u})
     [CompactSpace X] [QuasiSeparatedSpace X] [AlgebraicGeometry.HasResolutionProperty X]
     (hmodel : ∀ K : DerivedCategory X.Modules, IsPerfect (X := X.toRingedSpace) K →
@@ -500,15 +518,17 @@ theorem exists_plusQuasicoherent_of_isPerfect (X : Scheme.{u}) [CompactSpace X]
   rw [CochainComplex.plus_iff]
   exact ⟨a, inferInstance⟩
 
-/-- **[Stacks, Tag 0F8F], for a perfect object with a quasi-coherent model.**  On a
+/-- **The `[stacks 0F8F]` conclusion, for a perfect object with a quasi-coherent model.**  On a
 quasi-compact, quasi-separated scheme with the resolution property, a perfect object of
 `D(𝒪_X)` that is the image of some complex of quasi-coherent modules is the image of a bounded
 complex of finite locally free modules.
 
-The hypothesis `hmodel` is Tag 08DB read on complexes, with no boundedness asked of the
-representative; `exists_plusQuasicoherent_of_isPerfect` supplies the boundedness and
-`exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent` the replacement of Tag
-0F8E. -/
+Under these instances the conclusion is already the `[stacks 0F8F]` theorem
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty`; this is that theorem read from a
+prescribed quasi-coherent model.  The hypothesis `hmodel` is Tag 08DB read on complexes, with no
+boundedness asked of the representative; `exists_plusQuasicoherent_of_isPerfect` supplies the
+boundedness and `exists_boundedFiniteLocallyFree_iso_of_exists_plusQuasicoherent` the
+replacement of Tag 0F8E. -/
 theorem exists_boundedFiniteLocallyFree_iso_of_exists_quasicoherentModel (X : Scheme.{u})
     [CompactSpace X] [QuasiSeparatedSpace X] [AlgebraicGeometry.HasResolutionProperty X]
     (K : DerivedCategory X.Modules) (hK : IsPerfect (X := X.toRingedSpace) K)
@@ -525,8 +545,11 @@ homomorphism is surjective as soon as every perfect object of `D(𝒪_X)` is the
 complex of quasi-coherent modules.
 
 This is `Stacks.Perfect.BoundedLocallyFreeComplexes.surjective_comparisonAddHom` with its
-hypothesis replaced by the one input of [Stacks, Tag 0F8F] that this repository does not carry:
-everything Tag 0F8F deduces from that input is
+hypothesis replaced by the [Stacks, Tag 08DB] input of the `[stacks 0F8F]` theorem
+`exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty`: under the instances above that
+input comes from `exists_plus_quasicoherent_representative`, the affine diagonal through
+`AlgebraicGeometry.HasResolutionProperty.isAffineHom_diagonal`, and everything the theorem
+deduces from it is assembled by
 `exists_boundedFiniteLocallyFree_iso_of_exists_quasicoherentModel`. -/
 theorem surjective_comparisonAddHom_of_exists_quasicoherentModel (X : Scheme.{u})
     [CompactSpace X] [QuasiSeparatedSpace X] [AlgebraicGeometry.HasResolutionProperty X]
@@ -559,11 +582,11 @@ the resolution property the canonical homomorphism `K₀(Vect(X)) ⟶ K₀(X) = 
 sends the class of a finite locally free `𝒪_X`-module to the class of that module placed in
 degree zero, is surjective.
 
-The scheme has affine diagonal by the Noetherian case of [Stacks, Tag 0F8C],
-`AlgebraicGeometry.isAffineHom_diagonal_of_hasResolutionProperty_of_isNoetherian`, so
-`Stacks.Perfect.BoundedLocallyFreeComplexes.exists_boundedFiniteLocallyFree_iso_of_affineDiagonal`
-— [Stacks, Tag 0F8F] with the affine diagonal assumed rather than deduced — writes every perfect
-object of `D(𝒪_X)` as the image of a bounded complex of finite locally free modules. That is the
+The `[stacks 0F8F]` theorem `exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty` of
+`Perfect/BoundedLocallyFreeComplexes/PerfectRepresentative` — which deduces the affine diagonal
+from the resolution property by [Stacks, Tag 0F8C],
+`AlgebraicGeometry.HasResolutionProperty.isAffineHom_diagonal` — writes every perfect object of
+`D(𝒪_X)` as the image of a bounded complex of finite locally free modules. That is the
 hypothesis of `Stacks.Perfect.BoundedLocallyFreeComplexes.surjective_comparisonAddHom`, which
 reads off the class of such a complex as the alternating sum of the classes of its terms.
 
@@ -572,14 +595,14 @@ with the comparison homomorphism an isomorphism, is
 `Stacks.Perfect.BoundedLocallyFreeComplexes.bijective_comparisonAddHom_of_hasResolutionProperty`
 of `StacksFrontier.AlgebraicGeometry.Perfect.VectorBundleComparisonBijectiveUnconditional`. -/
 @[stacks 0FDJ "surjectivity of `K₀(Vect(X)) ⟶ K₀(X)`, for a Noetherian scheme in place of an \
-arbitrary quasi-compact one: the affine diagonal that the proof needs is deduced from the \
-resolution property by the Noetherian case of Tag 0F8C", sga "6 IV 2.9" "(i)"]
+arbitrary quasi-compact one: the representability that the proof needs is the registered \
+`[stacks 0F8F]` theorem exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty", \
+sga "6 IV 2.9" "(i)"]
 theorem surjective_comparisonAddHom_of_isNoetherian (X : Scheme.{u})
     [AlgebraicGeometry.IsNoetherian X] [QuasiSeparatedSpace X]
     [AlgebraicGeometry.HasResolutionProperty X] :
     Function.Surjective (comparisonAddHom X) :=
-  have := AlgebraicGeometry.isAffineHom_diagonal_of_hasResolutionProperty_of_isNoetherian X
-  surjective_comparisonAddHom X (exists_boundedFiniteLocallyFree_iso_of_affineDiagonal X)
+  surjective_comparisonAddHom X (exists_boundedFiniteLocallyFree_iso_of_hasResolutionProperty X)
 
 end Stacks.Perfect.BoundedLocallyFreeComplexes
 
