@@ -4,6 +4,7 @@ public import Mathlib.Algebra.Category.Grp.Ulift
 public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Limits
 public import Mathlib.Algebra.Category.ModuleCat.Ulift
 public import Mathlib.Algebra.Category.Ring.Adjunctions
+public import Mathlib.Algebra.Category.Ring.Limits
 public import Mathlib.Algebra.Homology.HomotopyCategory.MappingCone
 public import Mathlib.CategoryTheory.Adjunction.Limits
 public import Mathlib.Basic.Finite.Sum
