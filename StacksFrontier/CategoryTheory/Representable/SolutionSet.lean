@@ -93,7 +93,7 @@ lemma exists_surjective_pair
     inducedFunctor _
   let D := ι ⋙ CategoryOfElements.π F
   have coh : ∀ (i j : InducedCategory F.Elements (fun i : I => F.elementsMk (x i) (f i)))
-      (h : i ⟶ j), (D ⋙ F).map h (f i) = f j := fun i j h => (ι.map h).property
+      (h : i ⟶ j), (D ⋙ F).map h (f i) = f j := fun i j h => (ι.map h).map_val
   refine ⟨limit D, (preservesLimitIso F D).inv (Types.Limit.mk (D ⋙ F) f coh), ?_⟩
   intros Y g
   obtain ⟨i, φᵢ, hφ⟩ := hsurj Y g

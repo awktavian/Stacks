@@ -475,7 +475,7 @@ noncomputable def homotopyPiOfComponents (M : CochainComplex A ℤ) (K : I → C
   zero p q hpq := by
     have : (Pi.lift (fun i => (H i).hom p q) : M.X p ⟶ _) = 0 := by
       apply Limits.Pi.hom_ext; intro i
-      rw [Limits.Pi.lift_π, Limits.zero_comp]
+      rw [Limits.Pi.lift_comp_π, Limits.zero_comp]
       exact (H i).zero p q hpq
     rw [this, Limits.zero_comp]
   comm n := by
@@ -486,7 +486,7 @@ noncomputable def homotopyPiOfComponents (M : CochainComplex A ℤ) (K : I → C
     have key : ∀ p q : ℤ, (Pi.lift (fun i => (H i).hom p q) ≫ (evalProdIso K q).inv) ≫ (Pi.π K
         i).f q
         = (H i).hom p q := by
-      intro p q; rw [Category.assoc, inv_πf, Limits.Pi.lift_π]
+      intro p q; rw [Category.assoc, inv_πf, Limits.Pi.lift_comp_π]
     rw [Preadditive.add_comp, Preadditive.add_comp,
       ← dNext_comp_right, ← prevD_comp_right]
     simp only [key]
@@ -504,7 +504,7 @@ noncomputable def isLimitQuotientProductFan (K : I → CochainComplex A ℤ) :
   · intro s i
     change (HomotopyCategory.quotient A (ComplexShape.up ℤ)).map _ ≫
         (HomotopyCategory.quotient A (ComplexShape.up ℤ)).map (Pi.π K i) = s.proj i
-    rw [← Functor.map_comp, Limits.Pi.lift_π, Functor.map_preimage]
+    rw [← Functor.map_comp, Limits.Pi.lift_comp_π, Functor.map_preimage]
   · intro s m hm
     have hm' : (HomotopyCategory.quotient A (ComplexShape.up ℤ)).map
         ((HomotopyCategory.quotient A (ComplexShape.up ℤ)).preimage m) = m := Functor.map_preimage
@@ -518,7 +518,7 @@ noncomputable def isLimitQuotientProductFan (K : I → CochainComplex A ℤ) :
               i)))
             ≫ Pi.π K i) := by
       rw [Functor.map_comp, Functor.map_comp, hm', ← Functor.map_comp,
-        Limits.Pi.lift_π, Functor.map_preimage]
+        Limits.Pi.lift_comp_π, Functor.map_preimage]
       exact hm i
     exact Classical.choice ((Quotient.functor_map_eq_iff _ _ _).mp h2)
 

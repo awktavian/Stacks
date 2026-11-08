@@ -277,8 +277,14 @@ end Restriction
 The field `isIso_restrictionNatTrans` *assumes* that identification: it says that the canonical
 restriction map `colim_n Hom_X(K_n, L) ⟶ Hom_U(K, L|_U)` of
 `AlgebraicGeometry.DeligneSystem.restrictionNatTrans` is bijective for every `L`, which is the
-assertion of the tag. It is carried as data because its proof in the source is a dévissage in
-`L` followed by an Artin-Rees induction, which is not formalized here. -/
+assertion of the tag. The tag is now proved in the repository, as
+`AlgebraicGeometry.DeligneSystem.isIso_restrictionNatTrans` (`@[stacks 0G2H]`,
+`ExtensionZeroCoherent/DeligneSystemCoreCoherent.lean`); its conclusion is definitionally this
+field's type. The identification is nevertheless still carried as data here, because that
+theorem's file lies downstream in the import order, so it cannot be cited at the structure;
+values are built downstream, where it can be — `DeligneSystem.valueOfIso` of
+`ExtensionZeroCoherent/ExtensionByZeroOpenImmersion.lean` supplies the field with exactly
+that theorem. -/
 public structure Value where
   /-- The object `K` of `D^b_{Coh}(𝒪_U)`. -/
   obj : BoundedCoherentDerived U
@@ -286,7 +292,11 @@ public structure Value where
   constIso : D.system ⋙ restrictBoundedCoherent j ≅
     (Functor.const ℕᵒᵖ).obj ((boundedCoherentDerived U).ι.obj obj)
   /-- **Stacks 0G2H**, as data: `colim_n Hom_X(K_n, L) = Hom_U(K, L|_U)`, the map being the
-  restriction map `AlgebraicGeometry.DeligneSystem.restrictionNatTrans`. -/
+  restriction map `AlgebraicGeometry.DeligneSystem.restrictionNatTrans`.  The proved theorem
+  `AlgebraicGeometry.DeligneSystem.isIso_restrictionNatTrans` (`@[stacks 0G2H]`,
+  `DeligneSystemCoreCoherent.lean`) inhabits this type; it lives downstream of this structure
+  in the import order, so the field stays data here and the theorem is supplied where values
+  are built. -/
   isIso_restrictionNatTrans : IsIso (D.restrictionNatTrans obj constIso)
 
 namespace Value
@@ -316,10 +326,14 @@ set of morphisms of pro-objects into the constant pro-object at `L` by the co-Yo
 restriction map, by `AlgebraicGeometry.DeligneSystem.restrictionNatTrans_app_ι`. -/
 -- NO 0G2H attribute: `homProEquiv` is derived from `Value.isIso_restrictionNatTrans`,
 -- which is Tag 0G2H's own conclusion carried as data, so tagging this would be circular.
--- Tag 0G2H is NOT proved in this repository. A real proof starts from the `i = 0` core,
+-- Tag 0G2H IS proved in this repository, as
+-- `AlgebraicGeometry.DeligneSystem.isIso_restrictionNatTrans` (`@[stacks 0G2H]`,
+-- `ExtensionZeroCoherent/DeligneSystemCoreCoherent.lean:124`): from the `i = 0` core
 -- `Stacks.AlgebraicGeometry.IdealPowerColimit.canonicalMapToHomRestrict_bijective`
--- (`@[stacks 01YB "first display"]`, Coherent/HomColimit/FirstDisplaySurjectivity.lean:356),
--- and needs the devissage in `L` together with the Artin-Rees induction.
+-- (`@[stacks 01YB "first display"]`, Coherent/HomColimit/FirstDisplaySurjectivity.lean:356)
+-- through the truncation case `DeligneSystem.restrictionLifting_truncGELE` and the core
+-- principle `DeligneSystem.isIso_restrictionNatTrans_of_core`. The attribute stays with that
+-- theorem.
 public def homProEquiv (L : BoundedCoherentDerived X) :
     (D.proObject ⟶ ProSeq.const.obj L) ≃
       ((boundedCoherentDerived U).ι.obj V.obj ⟶ (restrictBoundedCoherent j).obj L) :=

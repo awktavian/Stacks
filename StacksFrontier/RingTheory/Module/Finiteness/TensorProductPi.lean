@@ -102,7 +102,6 @@ private lemma exists_fun_eq_sum_tmul {ι : Type*} [Fintype ι] {x : ι → M}
     (hx : Submodule.span R (Set.range x) = ⊤) (Q : Type*) [AddCommGroup Q] [Module R Q]
     (t : M ⊗[R] Q) : ∃ q : ι → Q, t = ∑ i, x i ⊗ₜ[R] q i := by
   induction t with
-  | zero => exact ⟨0, by simp⟩
   | tmul y p =>
       obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun R).mp
         (hx.ge (Submodule.mem_top : y ∈ ⊤))

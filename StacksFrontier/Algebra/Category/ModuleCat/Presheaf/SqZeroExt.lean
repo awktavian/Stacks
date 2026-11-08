@@ -60,6 +60,15 @@ universe u
 
 namespace PresheafOfModules
 
+/-- rc4 API drift shim: Mathlib moved the relative-derivation type from the `PresheafOfModules`
+namespace to the reducibly defeq `PresheafOfModulesOfCommRing` namespace (the target file's
+`M : PresheafOfModules (R ⋙ forget₂ CommRingCat RingCat)` is exactly
+`PresheafOfModulesOfCommRing R`). This abbrev restores the `PresheafOfModules.Derivation'`
+projection point without changing any statement. -/
+abbrev Derivation' {C : Type u} [Category.{u} C] {R S' : Cᵒᵖ ⥤ CommRingCat.{u}}
+    (M : PresheafOfModules.{u} (R ⋙ forget₂ CommRingCat RingCat)) (φ' : S' ⟶ R) : Type _ :=
+  PresheafOfModulesOfCommRing.Derivation' M φ'
+
 /-- For a commutative ring `A` and an `A`-module `N`, the right action of `A` on `N` obtained from
 the left action through the canonical isomorphism `Aᵐᵒᵖ ≅ A`. -/
 @[instance_reducible]

@@ -5,6 +5,7 @@ public import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
 public import Mathlib.CategoryTheory.Localization.CalculusOfFractions
 public import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Constructor
 public import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Derives
+import Mathlib.CategoryTheory.GuitartExact.KanExtension
 
 @[expose] public noncomputable section
 

@@ -272,8 +272,8 @@ theorem exists_span_ιMulti_append_eq_top (fl : M' →ₗ[R] M) (gl : M →ₗ[R
     {r m : ℕ} (b' : Module.Basis (Fin r) R M') (b'' : Module.Basis (Fin m) R M'') :
     ∃ (w : Fin m → M) (bM : Module.Basis (Fin (r + m)) R M),
       (bM : Fin (r + m) → M) = Fin.append (fun i => fl (b' i)) w ∧
-        Submodule.span R {exteriorPower.ιMulti R (r + m)
-          (Fin.append (fun i => fl (b' i)) w)} = ⊤ := by
+        Submodule.span R {exteriorPower.ιMulti R (r + m) (Fin.append (fun i => fl (b' i)) w)}
+          = ⊤ := by
   obtain ⟨w, bM, hbM⟩ := exists_basis_append fl gl hf hg hex b' b''
   exact ⟨w, bM, hbM, hbM ▸ span_ιMulti_eq_top bM⟩
 

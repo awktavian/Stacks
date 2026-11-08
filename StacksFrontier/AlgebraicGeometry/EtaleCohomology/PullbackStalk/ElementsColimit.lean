@@ -46,18 +46,18 @@ variable {C : Type v} [Category.{w} C] {P Q : C ⥤ Type u}
 /-- An isomorphism of functors to types induces an equivalence of their categories of
 elements. -/
 public def equivalenceOfNatIso (e : P ≅ Q) : P.Elements ≌ Q.Elements where
-  functor := CategoryOfElements.map e.hom
-  inverse := CategoryOfElements.map e.inv
+  functor := NatTrans.mapElements e.hom
+  inverse := NatTrans.mapElements e.inv
   unitIso := NatIso.ofComponents (fun X =>
-    CategoryOfElements.isoMk _ _ (Iso.refl X.1) (by simp)) (by
+    Functor.Elements.isoMk (Iso.refl X.1) (by simp)) (by
       intro X Y f
-      apply CategoryOfElements.ext
-      simp)
+      apply Functor.Elements.hom_ext
+      cat_disch)
   counitIso := NatIso.ofComponents (fun X =>
-    CategoryOfElements.isoMk _ _ (Iso.refl X.1) (by simp)) (by
+    Functor.Elements.isoMk (Iso.refl X.1) (by simp)) (by
       intro X Y f
-      apply CategoryOfElements.ext
-      simp)
+      apply Functor.Elements.hom_ext
+      cat_disch)
 
 variable [HasColimitsOfShape P.Elementsᵒᵖ (Type (u + 1))]
   [HasColimitsOfShape Q.Elementsᵒᵖ (Type (u + 1))]
@@ -136,7 +136,7 @@ public theorem toPresheafFiber_presheafFiberIsoOfFiberIso (Φ Ψ : Point.{u} J)
     Φ.toPresheafFiber V v P ≫ (presheafFiberIsoOfFiberIso Φ Ψ e (A := A)).hom.app P =
       Ψ.toPresheafFiber V (e.hom.app V v) P :=
   Functor.Final.ι_colimitIso_hom (equivalenceOfNatIso e).op.functor
-    ((CategoryOfElements.π Ψ.fiber).op ⋙ P) (Opposite.op ⟨V, v⟩)
+    ((CategoryOfElements.π Ψ.fiber).op ⋙ P) (Opposite.op (Φ.fiber.elementsMk V v))
 
 /-- `CategoryTheory.GrothendieckTopology.Point.toPresheafFiber_presheafFiberIsoOfFiberIso` for
 the inverse comparison. -/

@@ -5,6 +5,7 @@ public import Mathlib.Algebra.Module.CharacterModule
 public import Mathlib.Algebra.TrivSqZeroExt.Basic
 public import Mathlib.RingTheory.Extension.Cotangent.Basic
 public import Mathlib.RingTheory.Ideal.Cotangent
+import Mathlib.RingTheory.Ideal.Quotient.Nilpotent
 import Mathlib.RingTheory.Localization.Algebra
 public import Mathlib.RingTheory.Unramified.Basic
 public import StacksCore.Tactic.StacksAttribute

@@ -3,6 +3,8 @@ module
 public import StacksFrontier.AlgebraicGeometry.AmpleDegreeCriterion.ComponentPositivity
 public import StacksFrontier.AlgebraicGeometry.Chow.RelativeCycles.SpecialFibreDimension
 public import StacksFrontier.AlgebraicGeometry.Curves.ContractingRationalBridges.Basic
+public import StacksFrontier.AlgebraicGeometry.Curves.ContractingRationalBridges.DualizingAmple
+public import StacksFrontier.AlgebraicGeometry.Curves.ContractingRationalBridges.DualizingSheafDegree
 public import StacksFrontier.AlgebraicGeometry.Curves.ContractingRationalTails.RationalTail
 public import StacksFrontier.AlgebraicGeometry.Curves.VanishingResults.AutomaticProperties
 public import StacksFrontier.AlgebraicGeometry.Curves.VanishingResults.DualizingSheafDuality
@@ -30,16 +32,30 @@ assembles it from exactly those statements.
   implication `ω_X` ample ⟹ no rational tail and no rational bridge, from the degree
   computations of Stacks 0E63 and Stacks 0E64 together with the positivity half of Stacks 0B5Y.
 * `AlgebraicGeometry.isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge_of`:
-  the equivalence, the converse being Stacks 0E3P.
+  the equivalence conditional on the three shapes (kept for consumers that pass them as
+  hypotheses), the converse being Stacks 0E3P.
+* `AlgebraicGeometry.dualizingAmpleOfNoRationalTailsBridges`,
+  `AlgebraicGeometry.degreeNegativeOnRationalTails` and
+  `AlgebraicGeometry.degreeZeroOnRationalBridges`: the three shapes, discharged from the
+  registered theorems of Stacks 0E3P, 0E63 and 0E64.
+* `AlgebraicGeometry.isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge`: the
+  equivalence proved outright from the three transports.
 
 ## Implementation notes
 
-**Unregistered.** The three inputs are not proved here and are taken as hypotheses of
-exactly the shapes of their registrations (`h0E3P`, `h0E63`, `h0E64`); see the docstring of the main
-theorem. Their statements carry, inside `letI`, proofs of Prop-valued facts — the invertibility of
-`ω_X` and of its restriction to a component, the dimension bound of the component — which the
-degree does not depend on. Here those proofs are binders, so each hypothesis is the registered
-statement with its proof terms generalized, and is implied by it by proof irrelevance.
+**Discharged in-repo.** The three inputs are the registered theorems
+`AlgebraicGeometry.isAmple_dualizingSheafOverField_of_hasAtWorstNodalSingularities` (Stacks 0E3P,
+`Curves/ContractingRationalBridges/DualizingAmple.lean`),
+`AlgebraicGeometry.invertibleCurveDegree_pullback_dualizingSheafOverField_neg_of_isRationalTail`
+(Stacks 0E63, `Curves/ContractingRationalTails/DualizingSheafDegree.lean`) and
+`AlgebraicGeometry.invertibleCurveDegree_pullback_dualizingSheafOverField_eq_zero_of_isRationalBridge`
+(Stacks 0E64, `Curves/ContractingRationalBridges/DualizingSheafDegree.lean`). The latter two
+statements carry, inside `letI`, proofs of Prop-valued facts — the invertibility of `ω_X` and of its
+restriction to a component, the dimension bound of the component — which the degree does not depend
+on. In the shapes below those proofs are binders, so each registered statement implies its shape by
+proof irrelevance: `dualizingAmpleOfNoRationalTailsBridges`, `degreeNegativeOnRationalTails` and
+`degreeZeroOnRationalBridges` are the transports, and the fibre step below is proved outright from
+them.
 
 The ampleness criterion is the positivity half of Stacks 0B5Y at an arbitrary closed subcurve,
 `AlgebraicGeometry.invertibleCurveDegree_pullback_pos_of_isAmple`: a rational tail or bridge is
@@ -116,6 +132,15 @@ abbrev DegreeNegativeOnRationalTails : Prop :=
         ((Scheme.Modules.pullback C.subschemeι).obj
           (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k)))) < 0
 
+/-- **Stacks 0E63, discharged.** The registered theorem
+`AlgebraicGeometry.invertibleCurveDegree_pullback_dualizingSheafOverField_neg_of_isRationalTail`
+supplies its own dimension bound and invertibility proofs inside its statement; both are
+propositions, so the statement specializes to the binderized shape
+`DegreeNegativeOnRationalTails` exactly. -/
+theorem degreeNegativeOnRationalTails : DegreeNegativeOnRationalTails :=
+  fun _ _ _ _ _ hd _ hn C hC _ _ =>
+    invertibleCurveDegree_pullback_dualizingSheafOverField_neg_of_isRationalTail hd hn C hC
+
 /-- The degree of `ω_X|_C` on a rational bridge is zero: the shape of Stacks 0E64, with the
 Prop-valued proofs its statement fixes generalized to binders. -/
 abbrev DegreeZeroOnRationalBridges : Prop :=
@@ -132,6 +157,15 @@ abbrev DegreeZeroOnRationalBridges : Prop :=
         ((Scheme.Modules.pullback C.subschemeι).obj
           (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k)))) = 0
 
+/-- **Stacks 0E64, discharged.** The registered theorem
+`AlgebraicGeometry.invertibleCurveDegree_pullback_dualizingSheafOverField_eq_zero_of_isRationalBridge`
+supplies its own dimension bound and invertibility proofs inside its statement; both are
+propositions, so the statement specializes to the binderized shape
+`DegreeZeroOnRationalBridges` exactly. -/
+theorem degreeZeroOnRationalBridges : DegreeZeroOnRationalBridges :=
+  fun _ _ _ _ _ hd _ hn C hC _ _ =>
+    invertibleCurveDegree_pullback_dualizingSheafOverField_eq_zero_of_isRationalBridge hd hn C hC
+
 /-- The dualizing sheaf of a nodal curve without rational tails and bridges, of genus at least
 two, is invertible and ample: the shape of Stacks 0E3P. -/
 abbrev DualizingAmpleOfNoRationalTailsBridges : Prop :=
@@ -147,12 +181,18 @@ abbrev DualizingAmpleOfNoRationalTailsBridges : Prop :=
         (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k))),
       Scheme.Modules.IsAmple X (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k)))
 
+/-- **Stacks 0E3P, discharged.** The registered theorem
+`AlgebraicGeometry.isAmple_dualizingSheafOverField_of_hasAtWorstNodalSingularities` is the shape
+`DualizingAmpleOfNoRationalTailsBridges` with the same binder structure. -/
+theorem dualizingAmpleOfNoRationalTailsBridges : DualizingAmpleOfNoRationalTailsBridges :=
+  isAmple_dualizingSheafOverField_of_hasAtWorstNodalSingularities
+
 /-- **`ω_X` ample excludes rational tails and rational bridges** (the implication (2) ⟹ (1) of
 Stacks 0E74 on the fibre). If `ω_X` is invertible and ample, its restriction to every closed
 subcurve has positive degree (Stacks 0B5Y), while its degree on a rational tail is negative
-(`h0E63`, Stacks 0E63) and on a rational bridge is zero (`h0E64`, Stacks 0E64). -/
+(`degreeNegativeOnRationalTails`, Stacks 0E63) and on a rational bridge is zero
+(`degreeZeroOnRationalBridges`, Stacks 0E64). -/
 theorem noRationalTail_noRationalBridge_of_isAmple_dualizingSheafOverField
-    (h0E63 : DegreeNegativeOnRationalTails.{u}) (h0E64 : DegreeZeroOnRationalBridges.{u})
     [IsProper (X ↘ Spec (.of k))] (hdim : topologicalKrullDim X = 1)
     [IsIso ((Scheme.ΓSpecIso (.of k)).inv ≫ (X ↘ Spec (.of k)).appTop)]
     (hnodal : Stacks.Curves.HasAtWorstNodalSingularities k X)
@@ -176,19 +216,25 @@ theorem noRationalTail_noRationalBridge_of_isAmple_dualizingSheafOverField
         hamp⟩
   refine ⟨fun C hC => ?_, fun C hC => ?_⟩
   · obtain ⟨hCdim, _, hp⟩ := hpos C (hC.isCurve hdim)
-    exact absurd (h0E63 k X hdim hnodal C hC hCdim) (not_lt.2 hp.le)
+    exact absurd (degreeNegativeOnRationalTails k X hdim hnodal C hC hCdim) (not_lt.2 hp.le)
   · obtain ⟨hCdim, _, hp⟩ := hpos C (hC.isCurve hdim)
-    exact hp.ne' (h0E64 k X hdim hnodal C hC hCdim)
+    exact hp.ne' (degreeZeroOnRationalBridges k X hdim hnodal C hC hCdim)
 
 /-- **The fibre step of Stacks 0E74, from its inputs.** Let `X` be a proper scheme of dimension
 one over a field `k` with `H⁰(X, 𝒪_X) = k`, with at-worst-nodal singularities and of genus at
 least two. Then `X` has no rational tail and no rational bridge if and only if its dualizing
 sheaf `ω_X` is invertible and ample.
 
-The inputs are the statements of Stacks 0E3P (`h0E3P`), Stacks 0E63 (`h0E63`) and Stacks 0E64
-(`h0E64`), in the shapes `AlgebraicGeometry.DualizingAmpleOfNoRationalTailsBridges`,
+The inputs are the shapes of Stacks 0E3P, Stacks 0E63 and Stacks 0E64,
+`AlgebraicGeometry.DualizingAmpleOfNoRationalTailsBridges`,
 `AlgebraicGeometry.DegreeNegativeOnRationalTails` and
-`AlgebraicGeometry.DegreeZeroOnRationalBridges`. -/
+`AlgebraicGeometry.DegreeZeroOnRationalBridges`, now discharged in-repo by
+`AlgebraicGeometry.dualizingAmpleOfNoRationalTailsBridges`,
+`AlgebraicGeometry.degreeNegativeOnRationalTails` and
+`AlgebraicGeometry.degreeZeroOnRationalBridges`; this conditional form is kept only for downstream
+consumers that still pass the shapes through as hypotheses — see
+`AlgebraicGeometry.isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge` for the
+unconditional statement. -/
 theorem isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge_of
     (h0E3P : DualizingAmpleOfNoRationalTailsBridges.{u})
     (h0E63 : DegreeNegativeOnRationalTails.{u}) (h0E64 : DegreeZeroOnRationalBridges.{u})
@@ -203,8 +249,27 @@ theorem isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge_of
           (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k))),
         Scheme.Modules.IsAmple X (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k))) :=
   ⟨fun h => h0E3P k X hdim hnodal h.1 h.2 hg, fun ⟨_, hamp⟩ =>
-    noRationalTail_noRationalBridge_of_isAmple_dualizingSheafOverField h0E63 h0E64 hdim hnodal
-      hamp⟩
+    noRationalTail_noRationalBridge_of_isAmple_dualizingSheafOverField hdim hnodal hamp⟩
+
+/-- **The fibre step of Stacks 0E74, discharged.** Let `X` be a proper scheme of dimension one
+over a field `k` with `H⁰(X, 𝒪_X) = k`, with at-worst-nodal singularities and of genus at least
+two. Then `X` has no rational tail and no rational bridge if and only if its dualizing sheaf `ω_X`
+is invertible and ample. The three input shapes of the conditional form above are proved here from
+the registered theorems of Stacks 0E3P, Stacks 0E63 and Stacks 0E64. -/
+theorem isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge
+    [IsProper (X ↘ Spec (.of k))] (hdim : topologicalKrullDim X = 1)
+    [IsIso ((Scheme.ΓSpecIso (.of k)).inv ≫ (X ↘ Spec (.of k)).appTop)]
+    (hnodal : Stacks.Curves.HasAtWorstNodalSingularities k X)
+    (hg : 2 ≤ genus (X ↘ Spec (.of k))) :
+    ((∀ C : X.IdealSheafData, ¬ IsRationalTail k X C) ∧
+        ∀ C : X.IdealSheafData, ¬ IsRationalBridge k X C) ↔
+      ∃ _ : SheafOfModules.IsInvertible X.toRingedSpace.presheaf
+          (structureSheafRing X.toRingedSpace).property
+          (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k))),
+        Scheme.Modules.IsAmple X (Stacks.Duality.dualizingSheafOverField (X ↘ Spec (.of k))) :=
+  isAmple_dualizingSheafOverField_iff_noRationalTail_noRationalBridge_of
+    dualizingAmpleOfNoRationalTailsBridges degreeNegativeOnRationalTails
+    degreeZeroOnRationalBridges hdim hnodal hg
 
 end AlgebraicGeometry
 

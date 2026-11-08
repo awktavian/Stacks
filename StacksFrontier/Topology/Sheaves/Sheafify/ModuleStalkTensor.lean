@@ -320,6 +320,7 @@ noncomputable def germTmul (W : TopologicalSpace.Opens X) (hx : x ∈ W)
   TopCat.Presheaf.germ (tensorPresheafOfModules O O' α F).presheaf W x hx
     (s ⊗ₜ[O.obj (Opposite.op W)] m)
 
+set_option backward.isDefEq.respectTransparency true in
 /-- Restriction on a pure tensor in the tensor presheaf. -/
 theorem tensorPresheaf_map_tmul (W W' : TopologicalSpace.Opens X)
     (j : W' ⟶ W)
@@ -331,6 +332,7 @@ theorem tensorPresheaf_map_tmul (W W' : TopologicalSpace.Opens X)
   let := (α.app (Opposite.op W)).hom.toAlgebra
   let := (α.app (Opposite.op W')).hom.toAlgebra
   simp [tensorPresheafOfModules]
+  rfl
 
 /-- `germTmul` is invariant under restricting both representatives to a smaller open. -/
 theorem germTmul_res (W W' : TopologicalSpace.Opens X) (hx : x ∈ W) (hx' : x ∈ W')
