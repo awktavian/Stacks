@@ -22,7 +22,7 @@ Every pull request, to either tier, is reviewed by the maintainers: Kenny Lau, B
 
 ## Conventions
 
-* Attach `@[stacks TAG]` to the declaration that formalizes a tag, adding a comment if it covers only part, for example `@[stacks 00DS "part (1)"]`. Use `add_to_stacks TAG` for a Mathlib declaration.
+* Attach `@[stacks TAG]` to the declaration that formalizes a tag, adding a comment if it covers only part, for example `@[stacks 00DS "part (1)"]`. Use `add_to_stacks TAG DECL`, or `add_to_stacks TAG "comment" DECL`, for a declaration defined in Mathlib.
 * State the result as the Stacks Project states it, in its full generality. Do not weaken a statement to make it provable. If the statement is wrong or incomplete, note that in your claim.
 * Place each file in the module matching its topic. Reuse existing definitions rather than introducing parallel ones.
 * No `sorry`, `admit`, `native_decide`, or new `axiom`. Running `#print axioms DeclarationName` must list only `propext`, `Classical.choice`, and `Quot.sound`.

@@ -21,7 +21,7 @@ Coverage, human review, and proof status are independent. The trust boundary for
 
 ## Finding a tag
 
-A declaration carrying `@[stacks TAG]` formalizes all or part of that Stacks tag. A tag claimed by Mathlib carries `add_to_stacks TAG` instead. A single tag may appear on multiple declarations; when a declaration covers only part of the tag, the attribute's comment explains which part. Example: `@[stacks 00DS "part (1)"]` or `@[stacks 00DS "affine case"]`. After `import Stacks`, the command `#stacks_tags` lists all tagged declarations with their tags, and `#stacks_tags!` adds the statement text. The [website](https://stacks.axiommath.ai/) links each tag to its Lean code, dependencies, and the Stacks Project text.
+A declaration carrying `@[stacks TAG]` formalizes all or part of that Stacks tag. A tag that Mathlib already covers is registered on the Mathlib declaration with `add_to_stacks TAG DECL`, or `add_to_stacks TAG "comment" DECL`. A single tag may appear on multiple declarations; when a declaration covers only part of the tag, the attribute's comment explains which part. Example: `@[stacks 00DS "part (1)"]` or `@[stacks 00DS "affine case"]`. The command `#stacks_tags?` lists the stacks tags introduced in the current file. The [website](https://stacks.axiommath.ai/) links each tag to its Lean code, dependencies, and the Stacks Project text.
 
 ## EGA and SGA references
 
@@ -52,14 +52,6 @@ Run a probe with `lake env lean path/to/Probe.lean` once its dependencies are bu
 The axiom receipt is the output of `#print axioms DeclarationName` for each declaration you reuse. A proof is clean when its axiom set is exactly a subset of `{propext, Classical.choice, Quot.sound}`. An empty set is valid; sorries, sorryAx, custom axioms, and native-decision trust are not. A successful compile does not establish this by itself: Lean can compile `sorry` with a warning, and a precompiled file does not certify its source.
 
 The receipt is specific: it covers the named declaration, not a tag, module, or tier. It does not establish that the statement formalizes the mathematical claim: you must verify the hypotheses, conclusion, the objects it operates on, and any partial-coverage note separately. Explicit hypotheses in a theorem statement are assumptions regardless of axiom status.
-
-The EGA/SGA registration utilities have a bounded native regression test, requiring only the pinned compiler (no Mathlib download or full library build):
-
-```sh
-python3 -m unittest discover -s tests -v
-```
-
-This checks reference metadata and documentation behavior, not the mathematical library's proof certification.
 
 ## Building
 
