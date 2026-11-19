@@ -4,6 +4,7 @@ public import Mathlib.Algebra.Homology.Embedding.CochainComplex
 public import Mathlib.Algebra.Homology.HomologicalComplexLimits
 public import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.Basic
+public import Mathlib.CategoryTheory.Abelian.Subobject
 public import Mathlib.SetTheory.Cardinal.Order
 import StacksCore.Tactic.StacksAttribute
 
@@ -299,7 +300,7 @@ private lemma smallChain_acyclic {K : ChainComplex C ℕ} (hK : K.Acyclic)
   cases n with
   | zero =>
     apply ((smallChain hK S).exactAt_iff' 1 0 0 (by simp) (by simp)).2
-    apply (ShortComplex.exact_iff_epi _ (by simp [HomologicalComplex.sc']; rfl)).2
+    apply (ShortComplex.exact_iff_epi _ (by simp [HomologicalComplex.sc'])).2
     show Epi ((smallChain hK S).d (0 + 1) 0)
     simpa only [smallChain_d] using (inferInstanceAs (Epi S.d))
   | succ n =>
