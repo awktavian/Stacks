@@ -16,6 +16,19 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "StacksCore/Tactic/EgaSgaAttribute.lean"
 
+#: Wall-clock budget, in seconds, for EACH pinned-compiler leg of this check
+#: (module compile, import fixture, probe).  Measured on this lane 2026-11-20:
+#: the whole three-leg test runs in 25.4 s on the estate's Lean host when the
+#: machine is not contended (commit b255dfed3, `python3 -m unittest discover
+#: -s tests -p test_ega_sga_attribute.py`, rc 0).  The previous flat 60 s per
+#: leg left a 2.4x margin on an idle host and false-failed on a contended one:
+#: the first leg was measured exceeding 60 s on a saturated 10-core host while
+#: `lean` was merely slow, not stuck.  A missing or broken compiler is still a
+#: hard error at any budget, so raising the cap adds measurement and weakens
+#: nothing.  Raise-only: the historic 60 s floor still applies to the
+#: environment override.  Non-numeric override fails the test at import.
+LEAN_TIMEOUT_S = max(60, int(os.environ.get("STACKS_TEST_LEAN_TIMEOUT_S", "600")))
+
 IMPORTED = r'''
 import ReferenceUnderTest
 open Lean Elab Command Stacks.EgaSga
@@ -120,19 +133,19 @@ class ReferenceRegistrationTest(unittest.TestCase):
             env["LEAN_PATH"] = str(temporary)
             build = subprocess.run(
                 [str(compiler), "-o", "ReferenceUnderTest.olean", module.name],
-                cwd=temporary, env=env, capture_output=True, text=True, timeout=60,
+                cwd=temporary, env=env, capture_output=True, text=True, timeout=LEAN_TIMEOUT_S,
             )
             self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
             fixture = temporary / "ImportedReferences.lean"
             fixture.write_text(IMPORTED)
             imported_build = subprocess.run(
                 [str(compiler), "-o", "ImportedReferences.olean", fixture.name],
-                cwd=temporary, env=env, capture_output=True, text=True, timeout=60,
+                cwd=temporary, env=env, capture_output=True, text=True, timeout=LEAN_TIMEOUT_S,
             )
             self.assertEqual(imported_build.returncode, 0, imported_build.stdout + imported_build.stderr)
             result = subprocess.run(
                 [str(compiler), "--stdin"], input=PROBE,
-                cwd=temporary, env=env, capture_output=True, text=True, timeout=60,
+                cwd=temporary, env=env, capture_output=True, text=True, timeout=LEAN_TIMEOUT_S,
             )
             output = result.stdout + result.stderr
             self.assertEqual(result.returncode, 0, output)
